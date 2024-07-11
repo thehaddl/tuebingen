@@ -1,3 +1,5 @@
+import java.util.Random;
+import java.util.Arrays; 
 class Simulation {
     private int numParticles;
     private int numSteps;
