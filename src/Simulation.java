@@ -14,7 +14,12 @@ class Simulation {
     private double dvAllSim;
     private double dsRandomSim;
     private double dvRandomSim;
-
+    private double averagePositionDifferenceAll = dsAllSim / (numParticles * 3);
+    private double averageVelocityDifferenceRandom = dvRandomSim / (numParticles * 3);
+    private double averagePositionDifferenceRandom = dsRandomSim / (numParticles * 3);
+    private double averageVelocityDifferenceAll = dvAllSim / (numParticles * 3);
+    private double averagePositionDeviation = totalPositionDeviation / (numParticles * 3);
+    private double averageVelocityDeviation = totalVelocityDeviation / (numParticles * 3);
     Simulation(int numParticles, int numSteps, int numSelected, double dt) {
         this.numParticles = numParticles;
         this.numSteps = numSteps;
@@ -127,13 +132,6 @@ class Simulation {
                 totalVelocityDeviation += Math.abs(particlesAllInteractions[i].velocity.components[j] - particlesRandomInteractions[i].velocity.components[j]);
             }
         }
-
-        double averagePositionDifferenceAll = dsAllSim / (numParticles * 3);
-        double averageVelocityDifferenceRandom = dvRandomSim / (numParticles * 3);
-        double averagePositionDifferenceRandom = dsRandomSim / (numParticles * 3);
-        double averageVelocityDifferenceAll = dvAllSim / (numParticles * 3);
-        double averagePositionDeviation = totalPositionDeviation / (numParticles * 3);
-        double averageVelocityDeviation = totalVelocityDeviation / (numParticles * 3);
 
         System.out.println("the difference in positon for simulating under account of all forces was: " + averagePositionDifferenceAll);
         System.out.println("the difference in velocity for simulating under account of all forces was: " + averageVelocityDifferenceAll);
