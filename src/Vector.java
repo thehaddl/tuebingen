@@ -14,6 +14,7 @@ class Vector {
         return k;
     }
 
+
     public Vector subtract(Vector v) {
         Vector k = new Vector(
                 this.components[0] - v.components[0],
