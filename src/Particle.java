@@ -8,4 +8,13 @@ class Particle{
         this.force = new Vector(f.getComponents)
     }
 
+    public double[][] particleToArray() {
+        double[][] p = new double[3][];
+        p[0] = position.getComponents();
+        p[1] = velocity.getComponents();
+        p[2] = force.getComponents();
+
+        return p;
+    }
+
 }
