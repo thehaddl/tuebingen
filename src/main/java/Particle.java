@@ -5,7 +5,7 @@ class Particle{
     public Particle(Vector pos, Vector vel, Vector f){
         this.position = new Vector(pos.getComponents);
         this.velocity = new Vector(vel.getComponents);
-        this.force = new Vector(f.getComponents)
+        this.force = new Vector(f.getComponents);
     }
 
     public double[][] particleToArray() {
