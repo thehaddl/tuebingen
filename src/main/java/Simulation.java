@@ -5,6 +5,7 @@ import java.util.ArrayList;
 class Simulation {
 
     int numParticles;
+    double numP= numParticles;
     double g = 6.67;
     int steps;
     double dt;
@@ -18,52 +19,50 @@ class Simulation {
         steps = s;
         dt = deltaT;
     }
-    Vector interactionForce(Vector pos) {
-        Vector force = new Vector(pos.components)
-        forceScalar = (1 / this.calcDistance(pos) * this.calcDistance(pos)) * g;
-        return (force / pos.getMagnitude()) * forceScalar;
-    }
 
-    public initRandParticles() {
+
+    public void initRandParticles() {
         for (int i = 0; i < numParticles; i++) {
             Random r = new Random();
             double[] randPos = new double[3];
             for (int j = 0; j < 3; j++) {
-                randPos[j] = r.nextDouble;
+                randPos[j] = r.nextDouble();
             }
-            Vector f = new Vector({0, 0, 0})
-            Vector vel = new Vector({1, 1, 1});
+            double[] d = {0, 0, 0};
+            Vector f = new Vector(d);
+            double[] unit = {1, 1, 1};
+            Vector vel = new Vector(unit);
             Vector pos = new Vector(randPos);
-            particles[i] = new Particle(pos, vel);
+            particles[i] = new Particle(pos, vel, f);
         }
     }
 
-    public runSim() {
+    public void runSim() {
         for (int s = 0; s < steps; s++) {
 
             for (Particle p : particles) {
-                p.position = p.velocity * dt;
+                p.position.add(p.velocity.scale(dt));
 
             }
 
             for (Particle current : particles) {
                 for (Particle others : particles) {
                     if (current.equals(others) == false) {
-                        Vector vecItoJ = others.position.subtract(current.position)
-                        Vector f = this.interactionForce(vecItoJ);
+                        Vector vecItoJ = others.position.subtract(current.position);
+                        Vector f = vecItoJ.interactionForce(vecItoJ);
                         current.force.add(f);
                     }
                 }
             }
             for (Particle p : particles) {
-                p.velocity += (p.force / numParticles) * dt;
+                p.velocity.add(p.force.scale(1/numP)).scale(dt);
             }
 
         }
     }
 
     public Particle[] randomSubset() {
-        List<Particle> particleList = new ArrayList<>();
+        List<Particle> particleList = new ArrayList();
         Collections.addAll(particleList, particles);
         Collections.shuffle(particleList);
         Particle[] subsetParticles = new Particle[numSelected];
@@ -74,24 +73,24 @@ class Simulation {
         return subsetParticles;
     }
 
-    public runSimSubsetofN() {
+    public void runSimSubsetofN() {
         for (int s = 0; s < steps; s++) {
 
             for (Particle p : this.subsetParticles) {
-                p.position = p.velocity * dt;
+                p.position.add(p.velocity.scale(dt));
             }
 
             for (Particle current : particles) {
                 for (Particle others : this.subsetParticles) {
                     if (current.equals(others) == false) {
                         Vector vecItoJ = others.position.subtract(current.position);
-                        Vector f = this.interactionForce(vecItoJ);
+                        Vector f = vecItoJ.interactionForce(vecItoJ);
                         current.force.add(f);
                     }
                 }
             }
             for (Particle p : particles) {
-                p.velocity += (p.force / numParticles) * dt;
+                p.velocity.add((p.force.scale(1/  numParticles)).scale(dt));
             }
 
         }
