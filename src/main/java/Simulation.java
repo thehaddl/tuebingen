@@ -10,7 +10,7 @@ class Simulation {
     int steps;
     double dt;
     int numSelected;
-    Particle[] particles = new Particle[numParticles];
+    Particle[] particles;
     Particle[] subsetParticles = new Particle[numSelected];
 
     public Simulation(int numP,int numS,int s,double deltaT){
@@ -22,6 +22,7 @@ class Simulation {
 
 
     public void initRandParticles() {
+        particles= new Particle[numParticles];
         for (int i = 0; i < numParticles; i++) {
             Random r = new Random();
             double[] randPos = new double[3];
