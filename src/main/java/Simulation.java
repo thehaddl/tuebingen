@@ -23,17 +23,13 @@ class Simulation {
 
     public void initRandParticles() {
         particles= new Particle[numParticles];
+        Random r = new Random();
         for (int i = 0; i < numParticles; i++) {
-            Random r = new Random();
-            double[] randPos = new double[3];
-            for (int j = 0; j < 3; j++) {
-                randPos[j] = r.nextDouble();
-            }
-            double[] d = {0, 0, 0};
-            Vector f = new Vector(d);
-            double[] unit = {1, 1, 1};
-            Vector vel = new Vector(unit);
-            Vector pos = new Vector(randPos);
+
+            Vector f = new Vector(0,0,0);
+
+            Vector vel = new Vector(1,1,1);
+            Vector pos = new Vector(r.nextDouble(),r.nextDouble(),r.nextDouble());
             particles[i] = new Particle(pos, vel, f);
         }
     }
