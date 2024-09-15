@@ -40,55 +40,53 @@ class Simulation {
                 var force = new Vector(0, 0, 0);
                 for (Particle others : particles) {
                     if (current != others) {
-                        Vector vecItoJ = others.position.subtract(current.position);
-                        Vector f = vecItoJ.interactionForce(vecItoJ);
-                        force.add(f);
+                        Vector f = others.position.interactionForce(current.position);
+                        force = force.add(f);
                     }
+                      current.velocity = current.velocity.add(force.scale(dt / (numParticles - 1)));
                 }
-                current.velocity.add(force.scale(1.0 / (numParticles - 1))).scale(dt);
             }
-
-            // step 2: calculate new positions
-            for (Particle p : particles) {
-                p.position.add(p.velocity.scale(dt));
+                // step 2: calculate new positions
+                for (Particle p : particles) {
+                     p.position.add(p.velocity.scale(dt));
+                }
             }
         }
-    }
 
-    public Particle[] randomSubset() {
-        List<Particle> particleList = new ArrayList();
-        Collections.addAll(particleList, particles);
-        Collections.shuffle(particleList);
-        Particle[] subsetParticles = new Particle[numSelected];
-        for (int i = 0; i < numSelected; i++) {
-            subsetParticles[i] = particleList.get(i);
+        public Particle[] randomSubset () {
+            List<Particle> particleList = new ArrayList();
+            Collections.addAll(particleList, particles);
+            Collections.shuffle(particleList);
+            Particle[] subsetParticles = new Particle[numSelected];
+            for (int i = 0; i < numSelected; i++) {
+                subsetParticles[i] = particleList.get(i);
+            }
+
+            return subsetParticles;
         }
 
-        return subsetParticles;
-    }
+        public void runSimSubsetofN () {
 
-    public void runSimSubsetofN() {
+            for (int s = 0; s < steps; s++) {
+                subsetParticles = this.randomSubset();
 
-        for (int s = 0; s < steps; s++) {
-            subsetParticles = this.randomSubset();
-
-            // step 1: calculate new velocities
-            for (Particle current : particles) {
-                var force = new Vector(0,0,0);
-                for (Particle others : this.subsetParticles) {
-                    if (current != others) {
-                        Vector vecItoJ = others.position.subtract(current.position);
-                        Vector f = vecItoJ.interactionForce(vecItoJ);
-                        force.add(f);
+                // step 1: calculate new velocities
+                for (Particle current : particles) {
+                    var force = new Vector(0, 0, 0);
+                    for (Particle others : this.subsetParticles) {
+                        if (current != others) {
+                            Vector vecItoJ = others.position.subtract(current.position);
+                            Vector f = vecItoJ.interactionForce(vecItoJ);
+                            force.add(f);
+                        }
                     }
+                    current.velocity.add((force.scale(1.0 / (subsetParticles.length - 1))).scale(dt));
                 }
-                current.velocity.add((force.scale(1.0 / (subsetParticles.length-1))).scale(dt));
-            }
 
-            // step 2: calculate new posistions
-            for (Particle p : particles) {
-                p.position.add(p.velocity.scale(dt));
+                // step 2: calculate new posistions
+                for (Particle p : particles) {
+                    p.position.add(p.velocity.scale(dt));
+                }
             }
         }
     }
-}
