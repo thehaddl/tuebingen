@@ -4,7 +4,7 @@ class Main {
         Simulation s = new Simulation(100, 50, 100, 2);
         s.initRandParticles();
         s.runSim();
-        csvWriter writer = new csvWriter("data.csv");
+        csvWriter writer = new csvWriter("pythonVisuals/data.csv");
         writer.writeParticlesToCsv(s.particles);
     }
 }
