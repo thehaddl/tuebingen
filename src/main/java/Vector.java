@@ -42,4 +42,11 @@ class Vector {
         double forceScalar = (1 / this.calcDistance(pos) * this.calcDistance(pos)) * 6.67;
         return pos.scale(forceScalar);
     }
+    String toCsvString(){
+        String out = "";
+        for(int i = 0; i < 3; i++){
+            out += this.components[i] + ",";
+        }
+        return out;
+    }
 }

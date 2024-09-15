@@ -1,12 +1,11 @@
-import java.util.Arrays;
+import java.io.IOException;
 class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Simulation s = new Simulation(100, 50, 100, 1);
         s.initRandParticles();
-
         s.runSim();
-        for (Particle p : s.particles)
-            System.out.println(Arrays.toString(p.position.components));
+        csvWriter writer = new csvWriter("data.csv");
+        writer.writeParticlesToCsv(s.particles);
     }
 }
 
