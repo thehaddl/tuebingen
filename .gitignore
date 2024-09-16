@@ -3,6 +3,7 @@
 .venv/
 *.csv
 *.iml
+/pythonVisuals/media/
 out/
 
 
