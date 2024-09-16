@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.Random;
 import java.util.Collections;
 import java.util.List;
@@ -32,9 +33,10 @@ class Simulation {
         }
     }
 
-    public void runSim() {
+    public void runSim() throws IOException {
         for (int s = 0; s < steps; s++) {
-
+            csvWriter c = new csvWriter("particles.csv");
+            c.writeParticlesToCsv(particles);
             // step 1: calculate new velocities
             for (Particle current : particles) {
                 var force = new Vector(0, 0, 0);
