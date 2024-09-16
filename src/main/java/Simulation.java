@@ -35,12 +35,12 @@ class Simulation {
 
     public void runSim() throws IOException {
         for (int s = 0; s < steps; s++) {
-            csvWriter c = new csvWriter("particles.csv");
+            csvWriter c = new csvWriter("pythonVisuals/particles.csv") ;
             c.writeParticlesToCsv(particles);
             // step 1: calculate new velocities
             for (Particle current : particles) {
-                var force = new Vector(0, 0, 0);
                 for (Particle others : particles) {
+                    var force = new Vector(0, 0, 0);
                     if (current != others) {
                         Vector f = others.position.interactionForce(current.position);
                         force = force.add(f);
@@ -50,7 +50,7 @@ class Simulation {
             }
                 // step 2: calculate new positions
                 for (Particle p : particles) {
-                     p.position.add(p.velocity.scale(dt));
+                     p.position = p.position.add(p.velocity.scale(dt));
                 }
             }
         }
