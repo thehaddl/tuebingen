@@ -14,6 +14,7 @@ class Simulation {
     int numSelected;
     Particle[] particles;
     Particle[] subsetParticles;
+    Particle[] initialParticles;
 
     public Simulation(int numP, int numS, int s, double deltaT) {
         numParticles = numP;
@@ -23,7 +24,7 @@ class Simulation {
     }
 
 
-    public void initRandParticles() {
+    public Particle[] initRandParticles() {
         particles = new Particle[numParticles];
         Random r = new Random();
         for (int i = 0; i < numParticles; i++) {
@@ -31,6 +32,7 @@ class Simulation {
             Vector pos = new Vector(r.nextDouble(), r.nextDouble(), r.nextDouble());
             particles[i] = new Particle(pos, vel);
         }
+        return particles;
     }
 
     public void runSim() throws IOException {
