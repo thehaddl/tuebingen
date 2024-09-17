@@ -42,7 +42,8 @@ class Simulation {
                 for (Particle others : particles) {
                     var force = new Vector(0, 0, 0);
                     if (current != others) {
-                        Vector f = others.position.interactionForce(current.position);
+                        Vector f = others.position.subtract(current.position);
+                        f = f.interactionForce(f.getMagnitude());
                         force = force.add(f);
                     }
                       current.velocity = current.velocity.add(force.scale(dt / (numParticles - 1)));
@@ -77,9 +78,10 @@ class Simulation {
                     var force = new Vector(0, 0, 0);
                     for (Particle others : this.subsetParticles) {
                         if (current != others) {
-                            Vector vecItoJ = others.position.subtract(current.position);
-                            Vector f = vecItoJ.interactionForce(vecItoJ);
-                            force.add(f);
+                            Vector f = others.position.subtract(current.position);
+                            f = f.getUnitVec();
+                            f = f.interactionForce(f.getMagnitude());
+                            force = force.add(f);
                         }
                     }
                     current.velocity.add((force.scale(1.0 / (subsetParticles.length - 1))).scale(dt));
