@@ -70,23 +70,23 @@ class Simulation {
             return subsetParticles;
         }
 
-        public void runSimSubsetofN () {
-
+        public void runSimSubsetOfN () throws IOException {
             for (int s = 0; s < steps; s++) {
                 subsetParticles = this.randomSubset();
-
+                csvWriter c = new csvWriter("pythonVisuals/particles2.csv") ;
+                c.writeParticlesToCsv(subsetParticles);
                 // step 1: calculate new velocities
                 for (Particle current : particles) {
-                    var force = new Vector(0, 0, 0);
                     for (Particle others : this.subsetParticles) {
+                        var force = new Vector(0, 0, 0);
                         if (current != others) {
                             Vector f = others.position.subtract(current.position);
                             f = f.getUnitVec();
                             f = f.interactionForce(f.getMagnitude());
                             force = force.add(f);
                         }
+                        current.velocity.add((force.scale(1.0 / (subsetParticles.length - 1))).scale(dt));
                     }
-                    current.velocity.add((force.scale(1.0 / (subsetParticles.length - 1))).scale(dt));
                 }
 
                 // step 2: calculate new posistions
