@@ -37,10 +37,12 @@ class Vector {
     double calcDistance(Vector vec2) {
         return this.subtract(vec2).getMagnitude();
     }
-
-    Vector interactionForce(Vector pos) {
-        double forceScalar = (1 / (this.calcDistance(pos) * this.calcDistance(pos))) * 6.67;
-        return pos.scale(forceScalar);
+    Vector getUnitVec(){
+        return this.scale(1/this.getMagnitude());
+    }
+    Vector interactionForce(double distance) {
+        double forceScalar = (6.67 / (distance*distance));
+        return this.scale(forceScalar);
     }
     String toCsvString(){
         String out = "";
