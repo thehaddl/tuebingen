@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.IOException;
 class Main {
     public static void main(String[] args) throws IOException {
@@ -6,7 +7,7 @@ class Main {
         Simulation s = new Simulation(10, 50, 30, 0.05);
         s.initRandParticles();
         s.runSim();
-        System.out.println(s.particles.length);
+        System.out.println(s.particles.length);;
     }
 }
 
