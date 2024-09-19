@@ -41,15 +41,16 @@ class Simulation {
             c.writeParticlesToCsv(particles);
             // step 1: calculate new velocities
             for (Particle current : particles) {
+                var force = new Vector(0, 0, 0);
                 for (Particle others : particles) {
-                    var force = new Vector(0, 0, 0);
                     if (current != others) {
                         Vector f = others.position.subtract(current.position);
-                        f = f.interactionForce(f.getMagnitude());
-                        force = force.add(f);
+                        double distance =f.getMagnitude();
+                        Vector forceBetweenParticles = f.interactionForce(distance);
+                        force = force.add(forceBetweenParticles);
                     }
-                      current.velocity = current.velocity.add(force.scale(dt / (numParticles - 1)));
                 }
+                current.velocity = current.velocity.add(force.scale(dt / (numParticles - 1)));
             }
                 // step 2: calculate new positions
                 for (Particle p : particles) {
@@ -74,24 +75,24 @@ class Simulation {
             for (int s = 0; s < steps; s++) {
                 subsetParticles = this.randomSubset();
                 csvWriter c = new csvWriter("pythonVisuals/particles2.csv") ;
-                c.writeParticlesToCsv(subsetParticles);
+                c.writeParticlesToCsv(particles);
                 // step 1: calculate new velocities
                 for (Particle current : particles) {
-                    for (Particle others : this.subsetParticles) {
-                        var force = new Vector(0, 0, 0);
+                    var force = new Vector(0, 0, 0);
+                    for (Particle others : subsetParticles) {
                         if (current != others) {
                             Vector f = others.position.subtract(current.position);
                             f = f.getUnitVec();
                             f = f.interactionForce(f.getMagnitude());
                             force = force.add(f);
                         }
-                        current.velocity.add((force.scale(1.0 / (subsetParticles.length - 1))).scale(dt));
                     }
+                    current.velocity = current.velocity.add((force.scale(1.0 / (subsetParticles.length - 1))).scale(dt));
                 }
 
                 // step 2: calculate new posistions
                 for (Particle p : particles) {
-                    p.position.add(p.velocity.scale(dt));
+                    p.position = p.position.add(p.velocity.scale(dt));
                 }
             }
         }

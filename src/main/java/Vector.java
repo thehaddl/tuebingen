@@ -42,6 +42,7 @@ class Vector {
     }
     Vector interactionForce(double distance) {
         double forceScalar = (6.67 / (distance*distance));
+        this.getUnitVec();
         return this.scale(forceScalar);
     }
     String toCsvString(){
