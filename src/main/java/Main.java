@@ -1,29 +1,46 @@
-import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 class Main {
+    static Particle[] particles1;
+    static Particle[] particles2;
+    static Particle[] subsetParticles;
+    static Particle[] initialParticles;
+    static double[] deviation;
+    static int nP = 10;
+    static int nPs = 4;
+    static int steps = 100;
+    static double dt = 0.001;
+
     public static void main(String[] args) throws IOException {
-        File f = new File("pythonVisuals/particles.csv");
-        File g = new File("pythonVisuals/particles2.csv");
-        f.delete();
-        g.delete();
-        Simulation s = new Simulation(20, 2, 1000, 0.01);
-        s.initRandParticles();
-        s.initialParticles = new Particle[s.particles.length];
-        for (int i = 0; i < s.particles.length; i++) {
-            s.initialParticles[i] = new Particle(s.particles[i].position, s.particles[i].velocity); // Create a new instance
-        }
-        System.out.println(s.initialParticles[1].velocity.getMagnitude());
+        FileWriter fw = null;
+        FileWriter fw2 = null;
+        Deviator d = new Deviator(100);
+        try {
+            fw = new FileWriter("pythonVisuals/particles.csv");
+            fw2 = new FileWriter("pythonVisuals/particles2.csv");
 
-        s.runSim();
-        System.out.println(s.initialParticles[1].velocity.getMagnitude());
-        s.particles = new Particle[s.initialParticles.length];
-        for (int i = 0; i < s.particles.length; i++) {
-            s.particles[i] = new Particle(s.initialParticles[i].position, s.initialParticles[i].velocity); // Create a new instance
+            fw.write("x1,x2,x3,y1,y2,y3,\n");
+            fw2.write("x1,x2,x3,y1,y2,y3,\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (fw != null) fw.close();
+                if (fw2 != null) fw2.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        System.out.println(s.initialParticles[1].velocity.getMagnitude());
-        s.runSimSubsetOfN();
 
+        Simulation s = new Simulation(nP, nPs, steps, dt);
+        initialParticles = s.initRandParticles();
+        subsetParticles = s.randomSubset(initialParticles);
+        particles2 = s.runSimSubsetOfN(initialParticles, subsetParticles);
+        particles1 = s.runSim(initialParticles);
+
+        deviation = d.calcDeviation(particles1, particles2);
+        for (int i = 0; i < particles2.length; i++) {
+           //System.out.println(particles2[i].toCsvString());
+        }
     }
 }
-
-

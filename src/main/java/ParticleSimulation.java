@@ -1,6 +1,4 @@
-import com.sun.source.tree.IdentifierTree;
 
-import java.text.CollationElementIterator;
 import java.util.*;
 
 public class ParticleSimulation {
@@ -16,7 +14,7 @@ public class ParticleSimulation {
     static double dvAllSim=0;
     static double dsRandomSim=0;
     static double dvRandomSim=0;
-    static int numSteps= 1000;
+    static int numSteps= 10000;
     static int numSelected = 4;
     static double totalPositionDeviation = 0.0;
     static double totalVelocityDeviation = 0.0;
