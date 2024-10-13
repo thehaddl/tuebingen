@@ -5,6 +5,7 @@
 *.csv
 *.iml
 /pythonVisuals/media/
+__pycache__/
 out/
 .vscode/
 
