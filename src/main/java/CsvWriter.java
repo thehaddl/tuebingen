@@ -2,10 +2,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class csvWriter {
+public class CsvWriter {
     final String filePath;
     File file;
-    csvWriter(String pathToFile){
+    CsvWriter(String pathToFile){
         filePath = pathToFile;
     }
     void writeParticlesToCsv(Particle[] particles) throws IOException {
