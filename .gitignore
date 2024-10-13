@@ -1,10 +1,12 @@
 /target/
+/dataAnalysis/
 .DS_Store
 .venv/
 *.csv
 *.iml
 /pythonVisuals/media/
 out/
+.vscode/
 
 
 .Rproj.user
