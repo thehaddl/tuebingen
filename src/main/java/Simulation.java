@@ -1,94 +1,79 @@
-import java.util.Random;
-import java.util.Collections;
-import java.util.List;
-import java.util.ArrayList;
+import java.io.IOException;
+import java.util.*;
 
 class Simulation {
 
-    int numParticles;
+    private final Particle[] initialParticles;
+    private final int steps;
+    private final double dt;
 
-    double g = 6.67;
-    int steps;
-    double dt;
-    int numSelected;
-    Particle[] particles;
-    Particle[] subsetParticles;
-
-    public Simulation(int numP, int numS, int s, double deltaT) {
-        numParticles = numP;
-        numSelected = numS;
+    public Simulation(int numP, int s, double deltaT) {
         steps = s;
         dt = deltaT;
-    }
-
-
-    public void initRandParticles() {
-        particles = new Particle[numParticles];
+        initialParticles = new Particle[numP];
         Random r = new Random();
-        for (int i = 0; i < numParticles; i++) {
+        for (int i = 0; i < numP; i++) {
             Vector vel = new Vector(0, 0, 0);
             Vector pos = new Vector(r.nextDouble(), r.nextDouble(), r.nextDouble());
-            particles[i] = new Particle(pos, vel);
+            initialParticles[i] = new Particle(pos, vel);
         }
     }
 
-    public void runSim() {
+    public Particle[] runSim() throws IOException {
+        Particle[] particles = getCopyForSim();
+        CsvWriter c = new CsvWriter("pythonVisuals/particles.csv");
         for (int s = 0; s < steps; s++) {
+            c.writeParticlesToCsv(particles);
+            runSimStep(particles, particles);
+        }
 
-            // step 1: calculate new velocities
-            for (Particle current : particles) {
-                var force = new Vector(0, 0, 0);
-                for (Particle others : particles) {
-                    if (current != others) {
-                        Vector vecItoJ = others.position.subtract(current.position);
-                        Vector f = vecItoJ.interactionForce(vecItoJ);
-                        force.add(f);
-                    }
+        return particles;
+    }
+
+    public Particle[] runSimWithSubset(int subsetSize) throws IOException {
+        Particle[] particles = getCopyForSim();
+        CsvWriter c = new CsvWriter("pythonVisuals/particles.csv");
+        for (int s = 0; s < steps; s++) {
+            c.writeParticlesToCsv(particles);
+            runSimStep(particles, randomSubset(particles, subsetSize));
+        }
+
+        return particles;
+    }
+
+    private Particle[] getCopyForSim() {
+        Particle[] particles = new Particle[initialParticles.length];
+        for (int i = 0; i < initialParticles.length; i++) {
+            particles[i] = new Particle(initialParticles[i]);
+        }
+        return particles;
+    }
+
+    private void runSimStep(Particle[] particles, Particle[] forcesSubset) {
+        // step 1: calculate new velocities
+        for (Particle current : particles) {
+            var force = new Vector(0, 0, 0);
+            for (Particle others : forcesSubset) {
+                if (current != others) {
+                    Vector f = others.position.subtract(current.position);
+                    double distance = f.getMagnitude();
+                    Vector forceBetweenParticles = f.interactionForce(distance);
+                    force = force.add(forceBetweenParticles);
                 }
-                current.velocity.add(force.scale(1.0 / (numParticles - 1))).scale(dt);
             }
-
-            // step 2: calculate new positions
-            for (Particle p : particles) {
-                p.position.add(p.velocity.scale(dt));
-            }
+            current.velocity = current.velocity.add(force.scale(dt));
+        }
+        // step 2: calculate new positions
+        for (Particle a : particles) {
+            a.position = a.position.add(a.velocity.scale(dt));
         }
     }
 
-    public Particle[] randomSubset() {
+    private Particle[] randomSubset(Particle[] particles, int k) {
         List<Particle> particleList = new ArrayList();
         Collections.addAll(particleList, particles);
         Collections.shuffle(particleList);
-        Particle[] subsetParticles = new Particle[numSelected];
-        for (int i = 0; i < numSelected; i++) {
-            subsetParticles[i] = particleList.get(i);
-        }
-
-        return subsetParticles;
+        return particleList.subList(0, k).toArray(new Particle[k]);
     }
 
-    public void runSimSubsetofN() {
-
-        for (int s = 0; s < steps; s++) {
-            subsetParticles = this.randomSubset();
-
-            // step 1: calculate new velocities
-            for (Particle current : particles) {
-                var force = new Vector(0,0,0);
-                for (Particle others : this.subsetParticles) {
-                    if (current != others) {
-                        Vector vecItoJ = others.position.subtract(current.position);
-                        Vector f = vecItoJ.interactionForce(vecItoJ);
-                        force.add(f);
-                    }
-                }
-                current.velocity.add((force.scale(1.0 / (subsetParticles.length-1))).scale(dt));
-            }
-
-            // step 2: calculate new posistions
-            for (Particle p : particles) {
-                p.position.add(p.velocity.scale(dt));
-            }
-        }
-    }
 }

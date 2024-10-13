@@ -1,8 +1,13 @@
 /target/
+/dataAnalysis/
 .DS_Store
 .venv/
 *.csv
 *.iml
+/pythonVisuals/media/
+__pycache__/
 out/
+.vscode/
 
 
+.Rproj.user
