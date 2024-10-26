@@ -1,5 +1,7 @@
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Path;
+
 class Main {
     static final int nP = 100;
     static final int nPs = 100;
@@ -25,22 +27,26 @@ class Main {
                 e.printStackTrace();
             }
         }*/
-        try (FileWriter f = new FileWriter("deviation.csv", false)) {
+        try (FileWriter f = new FileWriter("deviation.csv", false);
+             var outputAll = new CsvWriter(Path.of("allparticles.csv"));
+             var outputSubset = new CsvWriter(Path.of("subparticles.csv"))) {
             double[] avdevs = new double[nPs];
             f.write("k,d\n");
             Deviator d = new Deviator(nP);
             Simulation s = new Simulation(nP, steps, dt);
+            s.setOutput(outputAll);
             Particle[] particles1 = s.runSim();
+            s.setOutput(outputSubset);
             for (int i = 1; i <= nPs; i++) {
                 Particle[] particles2 = s.runSimWithSubset(i);
                 double[] deviation = d.calcDeviation(particles1, particles2);
                 double avdev = d.averageDev(deviation);
-                avdevs[i-1] = avdev;
-                System.out.println("deviation for k = " + i +"\n");
+                avdevs[i - 1] = avdev;
+                System.out.println("deviation for k = " + i + "\n");
                 System.out.println(avdev);
-                f.append(i+ "," + avdev + "\n");
+                f.append(i + "," + avdev + "\n");
                 f.flush();
-                System.out.println(particles2[i-1].toCsvString());
+                System.out.println(particles2[i - 1].toCsvString());
             }
 
 
