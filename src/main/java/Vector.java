@@ -1,3 +1,5 @@
+import java.util.Arrays;
+import java.util.Objects;
 
 class Vector {
     final double[] components;
@@ -37,19 +39,39 @@ class Vector {
     double calcDistance(Vector vec2) {
         return this.subtract(vec2).getMagnitude();
     }
+
     Vector getUnitVec(){
         return this.scale(1/this.getMagnitude());
     }
+
     Vector interactionForce(double distance) {
         double forceScalar = (6.67 / (distance*distance));
         this.getUnitVec();
         return this.scale(forceScalar);
     }
+
     String toCsvString(){
         String out = "";
         for(int i = 0; i < 3; i++){
             out += this.components[i] + ",";
         }
         return out;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Vector vector)) return false;
+        return Objects.deepEquals(components, vector.components);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(components);
+    }
+
+    @Override
+    public String toString() {
+        return "Vector" + Arrays.toString(components);
     }
 }
