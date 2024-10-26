@@ -108,5 +108,17 @@ public class VectorTest {
         // verify
         assertEquals(1, actual);
     }
+    @Test
+    void getInteractionForce_between_Particles() {
+        // setup
+        var v1 = new Vector(1,2,3);
+        var v2 = new Vector(4,6,7);
+        double forceScalar = (6.67 / (Math.sqrt(41)*Math.sqrt(41)));
+        //execute
+        var actual = v1.interactionForce(v1.calcDistance(v2));
+
+        // verify
+        assertEquals(v1.getUnitVec().scale(forceScalar), actual);
+    }
 
 }
