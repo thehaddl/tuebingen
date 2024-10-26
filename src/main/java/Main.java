@@ -1,10 +1,10 @@
 import java.io.FileWriter;
 import java.io.IOException;
 class Main {
-    static final int nP = 10;
-    static final int nPs = 10;
-    static final int steps = 100;
-    static final double dt = 0.001;
+    static final int nP = 100;
+    static final int nPs = 100;
+    static final int steps = 1000;
+    static final double dt = 0.005;
 
     public static void main(String[] args) throws IOException {
         //FileWriter fw = null;
@@ -25,16 +25,32 @@ class Main {
                 e.printStackTrace();
             }
         }*/
+        try (FileWriter f = new FileWriter("deviation.csv", false)) {
+            double[] avdevs = new double[nPs];
+            f.write("k,d\n");
+            Deviator d = new Deviator(nP);
+            Simulation s = new Simulation(nP, steps, dt);
+            Particle[] particles1 = s.runSim();
+            for (int i = 1; i <= nPs; i++) {
+                Particle[] particles2 = s.runSimWithSubset(i);
+                double[] deviation = d.calcDeviation(particles1, particles2);
+                double avdev = d.averageDev(deviation);
+                avdevs[i-1] = avdev;
+                System.out.println("deviation for k = " + i +"\n");
+                System.out.println(avdev);
+                f.append(i+ "," + avdev + "\n");
+                f.flush();
+                System.out.println(particles2[i-1].toCsvString());
+            }
 
-        Deviator d = new Deviator(nP);
-        Simulation s = new Simulation(nP, steps, dt);
-        Particle[] particles2 = s.runSimWithSubset(nPs);
-        Particle[] particles1 = s.runSim();
 
-        double[] deviation = d.calcDeviation(particles1, particles2);
-        for (int i = 0; i < particles2.length; i++) {
-           //System.out.println(particles2[i].toCsvString());
-            System.out.println(deviation[i]);
         }
+//            Deviator d = new Deviator(nP);
+//            Simulation s = new Simulation(nP, steps, dt);
+//            Particle[] particles1 = s.runSim();
+//            Particle[] particles2 = s.runSimWithSubset(nPs);
+//            double[] deviation = d.calcDeviation(particles1, particles2);
+//            double avdev = d.averageDev(deviation);
+//            System.out.println(avdev);
     }
 }
