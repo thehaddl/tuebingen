@@ -46,7 +46,7 @@ class Main {
                 System.out.println(avdev);
                 f.append(i + "," + avdev + "\n");
                 f.flush();
-                System.out.println(particles2[i - 1].toCsvString());
+
             }
 
 

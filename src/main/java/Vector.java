@@ -49,14 +49,6 @@ class Vector {
         return this.getUnitVec().scale(forceScalar);
     }
 
-    String toCsvString(){
-        String out = "";
-        for(int i = 0; i < 3; i++){
-            out += this.components[i] + ",";
-        }
-        return out;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -9,8 +9,4 @@ class Particle{
         this.position = p.position;
         this.velocity = p.velocity;
     }
-    String toCsvString(){
-        String out = this.position.toCsvString() + this.velocity.toCsvString();
-        return out;
-    }
 }
