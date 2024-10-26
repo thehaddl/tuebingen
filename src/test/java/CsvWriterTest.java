@@ -1,0 +1,36 @@
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class CsvWriterTest {
+
+    @TempDir
+    Path dir;
+
+    @Test
+    void add_should_add_two_vectors() throws IOException {
+        // setup
+        Path pt = dir.resolve("output.csv");
+
+        //execute
+        try (var c = new CsvWriter(pt)) {
+            c.writeStep(17, new Particle[]{
+                    new Particle(new Vector(1, 2, 3), new Vector(2, 3, 4)),
+                    new Particle(new Vector(3, 4, 5), new Vector(4, 5, 6))
+            });
+        }
+
+        // Verify
+        String actual = Files.readString(pt);
+        assertEquals("17,1.0,2.0,3.0,2.0,3.0,4.0\n17,3.0,4.0,5.0,4.0,5.0,6.0\n", actual);
+
+    }
+}
