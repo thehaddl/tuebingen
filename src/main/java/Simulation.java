@@ -8,6 +8,8 @@ class Simulation {
     private final int steps;
     private final double dt;
 
+    private SimStepOutput output = SimStepOutput.NOP;
+
     public Simulation(int numP, int s, double deltaT) {
         steps = s;
         dt = deltaT;
@@ -20,11 +22,14 @@ class Simulation {
         }
     }
 
+    public void setOutput(SimStepOutput output) {
+        this.output = output;
+    }
+
     public Particle[] runSim() throws IOException {
         Particle[] particles = getCopyForSim();
-        CsvWriter c = new CsvWriter("pythonVisuals/particles.csv");
         for (int s = 0; s < steps; s++) {
-            c.writeParticlesToCsv(particles);
+            output.writeStep(s, particles);
             runSimStep(particles, particles);
         }
 
@@ -33,9 +38,8 @@ class Simulation {
 
     public Particle[] runSimWithSubset(int subsetSize) throws IOException {
         Particle[] particles = getCopyForSim();
-        CsvWriter c = new CsvWriter("pythonVisuals/particles2.csv");
         for (int s = 0; s < steps; s++) {
-            c.writeParticlesToCsv(particles);
+            output.writeStep(s, particles);
             runSimStep(particles, randomSubset(particles, subsetSize));
         }
 
