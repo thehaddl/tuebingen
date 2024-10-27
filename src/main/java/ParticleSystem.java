@@ -30,17 +30,13 @@ public class ParticleSystem {
         return sum.scale(1.0 / particles.length);
     }
 
-    public double getAvrDeviation(ParticleSystem other) {
-
-    }
-
     public static ParticleSystem createFrom(Particle[] particles) {
         return new ParticleSystem(particles.clone());
     }
 
     public static ParticleSystem createRandomPositions(int particleCount, double dimension) {
         Random r = new Random();
-        var particles = new Particle[particleCount]
+        var particles = new Particle[particleCount];
         for (int i = 0; i < particleCount; i++) {
             Vector vel = new Vector(0, 0, 0);
             Vector pos = new Vector(r.nextDouble() * dimension, r.nextDouble() * dimension, r.nextDouble() * dimension);

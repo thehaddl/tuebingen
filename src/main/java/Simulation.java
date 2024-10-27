@@ -11,9 +11,6 @@ class Simulation {
 
     private SimStepOutput output = SimStepOutput.NOP;
 
-    public Simulation(int numP, int s, double runTime, double dimension) {
-        this.dimension = dimension;
-        steps = s;
     public Simulation(int steps, double runTime) {
         this.steps = steps;
         this.runTime = runTime;
@@ -66,7 +63,6 @@ class Simulation {
             p.position = p.position.add(p.velocity.scale(dt));
         }
     }
-
     private Particle[] randomSubset(Particle[] particles, int k) {
         Random random = new Random();
         List<Particle> particleList = new ArrayList();
