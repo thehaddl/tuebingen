@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SimulationTest {
@@ -14,7 +15,8 @@ public class SimulationTest {
         Vector c1 = initial.centerOfGravity();
         Vector c2 = s.runSim(initial).centerOfGravity();
         Vector diff = c1.subtract(c2);
-        System.out.println(diff.toString());
+        var actual = diff;
+        assertArrayEquals(new double[]{0, 0, 0}, actual.components,0.0001);
 
     }
 }

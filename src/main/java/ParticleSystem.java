@@ -13,25 +13,12 @@ public class ParticleSystem {
         return particles.clone();
     }
 
-    int systemCount;
-    double dimension;
-
-    public ParticleSystem(int systemCount, double dimension) {
-        this.systemCount = systemCount;
-        particles = new Particle[systemCount];
-        this.dimension = dimension;
-    }
-
     public Vector centerOfGravity() {
         var sum = new Vector(0, 0, 0);
         for (var p : this.particles) {
             sum = sum.add(p.position);
         }
         return sum.scale(1.0 / particles.length);
-    }
-
-    public static ParticleSystem createFrom(Particle[] particles) {
-        return new ParticleSystem(particles.clone());
     }
 
     public static ParticleSystem createRandomPositions(int particleCount, double dimension) {
@@ -44,5 +31,10 @@ public class ParticleSystem {
         }
         return new ParticleSystem(particles);
     }
+
+    public static ParticleSystem createFrom(Particle[] particles) {
+        return new ParticleSystem(particles.clone());
+    }
+
 
 }
