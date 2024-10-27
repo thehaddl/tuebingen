@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class SimulationTest {
     @Test
     void center_of_gravity_shouldnt_shift() throws IOException {
-        Simulation s = new Simulation(100,1000,0.001);
+        Simulation s = new Simulation(100,1000,100,100);
         Vector c1 = s.centerOfGravity(s.initialParticles);
 
         Vector c2 = s.centerOfGravity(s.runSim());
