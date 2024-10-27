@@ -13,7 +13,7 @@ class Simulation {
 
     private SimStepOutput output = SimStepOutput.NOP;
 
-    public Simulation(int numP, int s, double runTimem, double dimension) {
+    public Simulation(int numP, int s, double runTime, double dimension) {
         this.dimension = dimension;
         steps = s;
         this.runTime = runTime;
