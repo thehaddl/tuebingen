@@ -33,13 +33,14 @@ class Main {
             double[] avdevs = new double[nPs];
             f.write("k,d\n");
             Deviator d = new Deviator(nP);
-            Simulation s = new Simulation(nP, steps, 100,1000);
+            var initial = ParticleSystem.createRandomPositions(nP, 1000);
+            Simulation s = new Simulation(steps, 100);
             s.setOutput(outputAll);
-            Particle[] particles1 = s.runSim();
+            var resultAllParticles = s.runSim(initial);
             s.setOutput(outputSubset);
             for (int i = 1; i <= nPs; i++) {
-                Particle[] particles2 = s.runSimWithSubset(i);
-                double[] deviation = d.calcDeviation(particles1, particles2);
+                var resultSubParticles = s.runSimWithSubset(initial, i);
+                double[] deviation = d.calcDeviation(resultAllParticles.getParticles(), resultSubParticles.getParticles());
                 double avdev = d.averageDev(deviation);
                 avdevs[i - 1] = avdev;
                 System.out.println("deviation for k = " + i + "\n");
