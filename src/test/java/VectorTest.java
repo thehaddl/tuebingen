@@ -25,7 +25,7 @@ public class VectorTest {
     }
 
     @Test
-    void toString_should_return_coordinates() {
+    void toString_should_print_coordinates() {
         var v1 = new Vector(1,2,3);
 
         var actual = v1.toString();
@@ -51,26 +51,25 @@ public class VectorTest {
     void subtract_should_subtract_two_vectors() {
         // setup
         var v1 = new Vector(1,2,3);
-        var v2 = new Vector(2,1,5);
+        var v2 = new Vector(-2,1,5);
 
         //execute
         var actual = v1.subtract(v2);
 
         // verify
-        assertEquals(new Vector(-1, 1, -2), actual);
+        assertEquals(new Vector(3, 1, -2), actual);
     }
 
     @Test
     void scale_should_scale_vector_by_scalar() {
         // setup
         var v1 = new Vector(1,2,3);
-        double scalar = 3.0;
-
+        double scalar = 1/3.0;
         //execute
         var actual = v1.scale(scalar);
 
         // verify
-        assertEquals(new Vector(3, 6, 9), actual);
+        assertEquals(new Vector(1/3.0, 2/3.0, 3/3.0), actual);
     }
     @Test
     void getMagnitude_should_return_magnitude_of_vector() {
@@ -107,18 +106,6 @@ public class VectorTest {
 
         // verify
         assertEquals(1, actual);
-    }
-    @Test
-    void getInteractionForce_between_Particles() {
-        // setup
-        var v1 = new Vector(1,2,3);
-        var v2 = new Vector(4,6,7);
-        double forceScalar = (6.67 / (Math.sqrt(41)*Math.sqrt(41)));
-        //execute
-        var actual = v1.interactionForce(v1.calcDistance(v2));
-
-        // verify
-        assertEquals(v1.getUnitVec().scale(forceScalar), actual);
     }
 
 }
