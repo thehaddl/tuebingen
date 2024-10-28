@@ -18,20 +18,16 @@ class Main {
             s.setOutput(outputAll);
             var resultAllParticles = s.runSim(initial);
             s.setOutput(outputSubset);
+
             for (int i = 1; i <= nPs; i++) {
-                double[] avdevs = new double[nPs];
                 var resultSubParticles = s.runSimWithSubset(initial, i);
                 double[] deviation = d.calcDeviation(resultAllParticles.getParticles(), resultSubParticles.getParticles());
                 double avdev = d.averageDev(deviation);
-                avdevs[i - 1] = avdev;
                 System.out.println("deviation for k = " + i + "\n");
                 System.out.println(avdev);
                 f.append(i + "," + avdev + "\n");
                 f.flush();
-
             }
-
-
         }
     }
 }
