@@ -16,7 +16,9 @@ public class CsvWriterTest {
     Path dir;
 
     @Test
-    void csv_writeStep_should_write_particles_for_step() throws IOException {
+
+    void writeStep_should_write_particles_for_step() throws IOException {
+
         // setup
         Path pt = dir.resolve("output.csv");
 
