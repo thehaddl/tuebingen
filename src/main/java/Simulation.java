@@ -5,64 +5,45 @@ import java.util.List;
 
 class Simulation {
 
-    public double dimension;
-    private double runTime = 100;
-    final Particle[] initialParticles;
+
+    private double runTime;
+
     private final int steps;
     private final double dt;
 
     private SimStepOutput output = SimStepOutput.NOP;
 
-    public Simulation(int numP, int s, double runTimem, double dimension) {
-        this.dimension = dimension;
-        steps = s;
+
+    public Simulation(int steps, double runTime) {
+        this.steps = steps;
         this.runTime = runTime;
-        initialParticles = new Particle[numP];
         dt = runTime/steps;
-        Random r = new Random();
-        for (int i = 0; i < numP; i++) {
-            Vector vel = new Vector(0,0,0);
-            Vector pos = new Vector(r.nextDouble()* dimension, r.nextDouble()* dimension, r.nextDouble()* dimension);
-            initialParticles[i] = new Particle(pos, vel);
-        }
+
     }
 
     public void setOutput(SimStepOutput output) {
         this.output = output;
     }
-    public Vector centerOfGravity(Particle[] particles) {
-        var sum = new Vector(0, 0, 0);
-        for (var p : particles) {
-            sum = sum.add(p.position);
-        }
-        return sum.scale(1.0 / particles.length);
-    }
-    public Particle[] runSim() throws IOException {
-        Particle[] particles = getCopyForSim();
+
+
+    public ParticleSystem runSim(ParticleSystem initial) throws IOException {
+        Particle[] particles = initial.getParticles();
+
         for (int s = 0; s < steps; s++) {
             output.writeStep(s, particles);
             runSimStep(particles, particles);
         }
 
-        return particles;
+        return ParticleSystem.createFrom(particles);
     }
 
-    public Particle[] runSimWithSubset(int subsetSize) throws IOException {
-        Particle[] particles = getCopyForSim();
+    public ParticleSystem runSimWithSubset(ParticleSystem initial, int subsetSize) throws IOException {
+        Particle[] particles = initial.getParticles();
         for (int s = 0; s < steps; s++) {
             output.writeStep(s, particles);
             runSimStep(particles, randomSubset(particles, subsetSize));
         }
-
-        return particles;
-    }
-
-    private Particle[] getCopyForSim() {
-        Particle[] particles = new Particle[initialParticles.length];
-        for (int i = 0; i < initialParticles.length; i++) {
-            particles[i] = new Particle(initialParticles[i]);
-        }
-        return particles;
+        return ParticleSystem.createFrom(particles);
     }
 
     private void runSimStep(Particle[] particles, Particle[] subset) {
@@ -88,7 +69,6 @@ class Simulation {
             p.position = p.position.add(p.velocity.scale(dt));
         }
     }
-
     private Particle[] randomSubset(Particle[] particles, int k) {
         Random random = new Random();
         List<Particle> particleList = new ArrayList();
