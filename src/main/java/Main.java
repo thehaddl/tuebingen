@@ -6,6 +6,7 @@ class Main {
     static final int nP = 300;
     static final int nPs = 300;
     static final int steps = 1000;
+
     public static void main(String[] args) throws IOException {
         try (FileWriter f = new FileWriter("deviation.csv", false);
              var outputAll = new CsvWriter(Path.of("allparticles.csv"));

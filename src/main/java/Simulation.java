@@ -1,27 +1,31 @@
+import java.awt.*;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
 class Simulation {
-
     private final double runTime;
     private final int steps;
     private final double dt;
 
     private SimStepOutput output = SimStepOutput.NOP;
 
+
     public Simulation(int steps, double runTime) {
         this.steps = steps;
         this.runTime = runTime;
         dt = runTime/steps;
+
     }
 
     public void setOutput(SimStepOutput output) {
         this.output = output;
     }
 
+
     public ParticleSystem runSim(ParticleSystem initial){
         Particle[] particles = initial.getParticles();
+
         for (int s = 0; s < steps; s++) {
             output.writeStep(s, particles);
             runSimStep(particles, particles);
@@ -30,7 +34,9 @@ class Simulation {
         return ParticleSystem.createFrom(particles);
     }
 
+
     public ParticleSystem runSimWithSubset(ParticleSystem initial, int subsetSize){
+
         Particle[] particles = initial.getParticles();
         for (int s = 0; s < steps; s++) {
             output.writeStep(s, particles);
