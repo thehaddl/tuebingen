@@ -1,10 +1,8 @@
-import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class testParticle {
+public class ParticleTest {
     @Test
     void getGravitationalForce_should_return_force(){
         //setup
