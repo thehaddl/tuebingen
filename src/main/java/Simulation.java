@@ -47,10 +47,7 @@ class Simulation {
             var force = new Vector(0, 0, 0);
             for (Particle other : subset) {
                 if (current != other) {
-                    Vector f = other.position.subtract(current.position);
-                    double distance = f.getMagnitude();
-                    Vector forceBetweenParticles = f.interactionForce(distance);
-                    force = force.add(forceBetweenParticles);
+                    force = force.add(current.getGavitationalForce(other));
                 }
             }
             forces[i] = force;
