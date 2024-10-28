@@ -1,23 +1,28 @@
+import java.awt.*;
 import java.io.IOException;
 import java.util.*;
+import java.util.List;
 
 class Simulation {
 
-    public static final double SCALAR = 1000;
-    private final Particle[] initialParticles;
+    public double dimension;
+    private double runTime = 100;
+    final Particle[] initialParticles;
     private final int steps;
     private final double dt;
 
     private SimStepOutput output = SimStepOutput.NOP;
 
-    public Simulation(int numP, int s, double deltaT) {
+    public Simulation(int numP, int s, double runTimem, double dimension) {
+        this.dimension = dimension;
         steps = s;
-        dt = deltaT;
+        this.runTime = runTime;
         initialParticles = new Particle[numP];
+        dt = runTime/steps;
         Random r = new Random();
         for (int i = 0; i < numP; i++) {
             Vector vel = new Vector(0,0,0);
-            Vector pos = new Vector(r.nextDouble()* SCALAR, r.nextDouble()* SCALAR, r.nextDouble()* SCALAR);
+            Vector pos = new Vector(r.nextDouble()* dimension, r.nextDouble()* dimension, r.nextDouble()* dimension);
             initialParticles[i] = new Particle(pos, vel);
         }
     }
@@ -25,7 +30,13 @@ class Simulation {
     public void setOutput(SimStepOutput output) {
         this.output = output;
     }
-
+    public Vector centerOfGravity(Particle[] particles) {
+        var sum = new Vector(0, 0, 0);
+        for (var p : particles) {
+            sum = sum.add(p.position);
+        }
+        return sum.scale(1.0 / particles.length);
+    }
     public Particle[] runSim() throws IOException {
         Particle[] particles = getCopyForSim();
         for (int s = 0; s < steps; s++) {
