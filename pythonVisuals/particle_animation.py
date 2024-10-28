@@ -1,23 +1,28 @@
 import pandas as pd
 from manim import *
-config.disable_caching = False
+config.disable_caching = True
 def readData():
-    df = pd.read_csv('particles.csv', header= None)
+    df = pd.read_csv('allparticles.csv', header= None)
     df = df.dropna(axis=1, how='all')
-    columns = ['x1', 'x2', 'x3', 'vx', 'vy', 'vz']  # Define column names based on your data
+    columns = ['step','x1', 'x2', 'x3', 'vx', 'vy', 'vz']  # Define column names based on your data
     df.columns = columns
     return df
 df = readData()
-scale_factor = 10
+scale_factor = 1000
 print(df.head())
 
 class Animation(ThreeDScene):
     def construct(self):
-        num_particles = 20
+        num_particles = 30
         num_time_steps = len(df) // num_particles
-        particle_radius = 0.07 
+        particle_radius = 0.07
         particles = [Sphere(radius=particle_radius, color=BLUE) for _ in range(num_particles)]
-        axes = ThreeDAxes()
+        axes = ThreeDAxes(
+            x_range=[-1*scale_factor, 1*scale_factor, 20],  # x-axis range from -100 to 100 with tick marks every 20 units
+            y_range=[-1*scale_factor, 1*scale_factor, 20],  # y-axis range from -100 to 100 with tick marks every 20 units
+            z_range=[-1*scale_factor, 1*scale_factor, 20],  # z-axis range from -100 to 100 with tick marks every 20 units
+        )
+
         self.add(axes)
         self.set_camera_orientation(phi=75 * DEGREES, theta=30 * DEGREES)
 

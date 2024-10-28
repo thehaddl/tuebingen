@@ -3,10 +3,10 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 class Main {
-    static final int nP = 100;
-    static final int nPs = 100;
+    static final int nP = 300;
+    static final int nPs = 300;
     static final int steps = 1000;
-    static final double dt = 0.005;
+    static final double dt = 0.05;
 
     public static void main(String[] args) throws IOException {
         //FileWriter fw = null;
@@ -33,7 +33,7 @@ class Main {
             double[] avdevs = new double[nPs];
             f.write("k,d\n");
             Deviator d = new Deviator(nP);
-            Simulation s = new Simulation(nP, steps, dt);
+            Simulation s = new Simulation(nP, steps, 100,1000);
             s.setOutput(outputAll);
             Particle[] particles1 = s.runSim();
             s.setOutput(outputSubset);
