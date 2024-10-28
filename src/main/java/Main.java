@@ -33,8 +33,10 @@ class Main {
             double[] avdevs = new double[nPs];
             f.write("k,d\n");
             Deviator d = new Deviator(nP);
+
             var initial = ParticleSystem.createRandomPositions(nP, 1000);
             Simulation s = new Simulation(steps, 100);
+
             s.setOutput(outputAll);
             var resultAllParticles = s.runSim(initial);
             s.setOutput(outputSubset);
