@@ -44,11 +44,6 @@ class Vector {
         return this.scale(1/this.getMagnitude());
     }
 
-    Vector interactionForce(double distance) {
-        double forceScalar = (6.67 / (distance*distance));
-        return this.getUnitVec().scale(forceScalar);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

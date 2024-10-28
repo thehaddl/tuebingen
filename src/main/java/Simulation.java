@@ -4,10 +4,7 @@ import java.util.*;
 import java.util.List;
 
 class Simulation {
-
-
-    private double runTime;
-
+    private final double runTime;
     private final int steps;
     private final double dt;
 
@@ -26,7 +23,7 @@ class Simulation {
     }
 
 
-    public ParticleSystem runSim(ParticleSystem initial) throws IOException {
+    public ParticleSystem runSim(ParticleSystem initial){
         Particle[] particles = initial.getParticles();
 
         for (int s = 0; s < steps; s++) {
@@ -37,7 +34,9 @@ class Simulation {
         return ParticleSystem.createFrom(particles);
     }
 
-    public ParticleSystem runSimWithSubset(ParticleSystem initial, int subsetSize) throws IOException {
+
+    public ParticleSystem runSimWithSubset(ParticleSystem initial, int subsetSize){
+
         Particle[] particles = initial.getParticles();
         for (int s = 0; s < steps; s++) {
             output.writeStep(s, particles);
@@ -53,10 +52,7 @@ class Simulation {
             var force = new Vector(0, 0, 0);
             for (Particle other : subset) {
                 if (current != other) {
-                    Vector f = other.position.subtract(current.position);
-                    double distance = f.getMagnitude();
-                    Vector forceBetweenParticles = f.interactionForce(distance);
-                    force = force.add(forceBetweenParticles);
+                    force = force.add(current.getGavitationalForce(other));
                 }
             }
             forces[i] = force;
