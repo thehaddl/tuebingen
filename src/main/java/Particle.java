@@ -1,4 +1,5 @@
-class Particle{
+class Particle implements Cloneable {
+
     Vector position;
     Vector velocity;
     public Particle(Vector pos, Vector vel){
