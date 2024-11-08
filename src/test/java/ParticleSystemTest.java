@@ -16,18 +16,23 @@ public class ParticleSystemTest {
         // verify
         assertEquals(new Vector(0,0,0), actual);
     }
+
     @Test
     void getParticles_should_return_particles () {
         // setup
         Particle[] p1 = new Particle[]{
-                new Particle(new Vector(1,1,0), new Vector(0,0,0)),
-                new Particle(new Vector(-1,-1,0), new Vector(0,0,0))
+                new Particle(new Vector(1,1,0), new Vector(1,2,3)),
+                new Particle(new Vector(-1,-1,0), new Vector(4,5,6.5))
         };
         ParticleSystem p = ParticleSystem.createFrom(p1);
         //execute
         var actual = p.getParticles();
         // verify
-        assertArrayEquals(p1, actual);
+        assertEquals(2,actual.length);
+        assertEquals(new Vector(1,1,0), actual[0].position);
+        assertEquals(new Vector(1,2,3), actual[0].velocity);
+        assertEquals(new Vector(-1,-1,0), actual[1].position);
+        assertEquals(new Vector(4,5,6.5), actual[1].velocity);
     }
 
     @Test
