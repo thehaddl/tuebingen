@@ -13,8 +13,7 @@ class Main {
              var outputSubset = new CsvWriter(Path.of("subparticles.csv"))) {
 
             f.write("k,d\n");
-            Deviator d = new Deviator(nP);
-            var initial = ParticleSystem.createRandomPositions(nP, 1000);
+            var initial = ParticleSystem.createRandomPositions(nP, 10);
             Simulation s = new Simulation(steps, 100);
             s.setOutput(outputAll);
             var resultAllParticles = s.runSim(initial);
@@ -22,13 +21,15 @@ class Main {
 
             for (int i = 1; i <= nPs; i++) {
                 var resultSubParticles = s.runSimWithSubset(initial, i);
-                double[] deviation = d.calcDeviation(resultAllParticles.getParticles(), resultSubParticles.getParticles());
-                double avdev = d.averageDev(deviation);
+                double averageDeviation = resultSubParticles.calcAverageDeviation(resultAllParticles);
                 System.out.println("deviation for k = " + i + "\n");
-                System.out.println(avdev);
-                f.append(i + "," + avdev + "\n");
+                System.out.println(averageDeviation);
+                f.append(i + "," + averageDeviation + "\n");
                 f.flush();
             }
+
         }
     }
+
+
 }

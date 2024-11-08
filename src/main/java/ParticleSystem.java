@@ -10,7 +10,11 @@ public class ParticleSystem {
     }
 
     public Particle[] getParticles() {
-        return particles.clone();
+        Particle[] copy = new Particle[particles.length];
+        for (int i = 0; i < particles.length; i++) {
+            copy[i] = new Particle(particles[i]);
+        }
+        return copy;
     }
 
     public Vector centerOfGravity() {
@@ -36,5 +40,14 @@ public class ParticleSystem {
         return new ParticleSystem(particles.clone());
     }
 
+    public double calcAverageDeviation(ParticleSystem reference) {
+        double deviation = 0.0;
+        for (int i = 0; i < this.particles.length; i++) {
+            Particle a = this.particles[i];
+            Particle b = reference.particles[i];
+            deviation += a.position.subtract(b.position).getMagnitude();
+        }
+        return deviation / this.particles.length;
+    }
 
 }

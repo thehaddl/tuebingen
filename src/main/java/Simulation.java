@@ -1,5 +1,3 @@
-import java.awt.*;
-import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
@@ -25,7 +23,6 @@ class Simulation {
 
     public ParticleSystem runSim(ParticleSystem initial){
         Particle[] particles = initial.getParticles();
-
         for (int s = 0; s < steps; s++) {
             output.writeStep(s, particles);
             runSimStep(particles, particles);
