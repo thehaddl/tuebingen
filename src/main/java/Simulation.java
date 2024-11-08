@@ -25,7 +25,6 @@ class Simulation {
 
     public ParticleSystem runSim(ParticleSystem initial){
         Particle[] particles = initial.getParticles();
-
         for (int s = 0; s < steps; s++) {
             output.writeStep(s, particles);
             runSimStep(particles, particles);
