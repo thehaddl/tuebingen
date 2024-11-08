@@ -36,5 +36,16 @@ public class ParticleSystem {
         return new ParticleSystem(particles.clone());
     }
 
+    public double calcAverageDeviation(ParticleSystem reference) {
+        double deviation = 0.0;
+        for (int i = 0; i < this.particles.length; i++) {
+            Particle a = this.particles[i];
+            Particle b = reference.particles[i];
+            deviation += a.position.subtract(b.position).getMagnitude();
+            System.out.println(deviation);
+        }
+        return deviation / this.particles.length;
+
+    }
 
 }
