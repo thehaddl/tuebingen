@@ -44,12 +44,14 @@ class Simulation {
 
     private void runSimStep(Particle[] particles, Particle[] subset) {
         var forces = new Vector[particles.length];
+        var subsetSize = 1.0/subset.length;
         for (int i = 0; i < particles.length; i++) {
             var current = particles[i];
             var force = new Vector(0, 0, 0);
             for (Particle other : subset) {
                 if (current != other) {
-                    force = force.add(current.getGavitationalForce(other));
+
+                    force = force.add(current.getGavitationalForce(other)).scale(subsetSize);
                 }
             }
             forces[i] = force;
@@ -68,6 +70,13 @@ class Simulation {
         Collections.addAll(particleList, particles);
         Collections.shuffle(particleList,random);
         return particleList.subList(0, k).toArray(new Particle[0]);
+//        Particle[] randomParticles = new Particle[k];
+//        for(int i = 0; i < k; i ++){
+//            randomParticles[i] = particles[i];
+//        }
+//        return randomParticles;
+
+
     }
 
 }
