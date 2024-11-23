@@ -16,7 +16,7 @@ class Particle implements Cloneable {
     Vector getGavitationalForce(Particle other) {
         var vec = other.position.subtract(this.position);
         var distance = vec.getMagnitude();
-        double forceScalar = GRAVITY / (distance*distance);
+        double forceScalar = GRAVITY /((distance* distance)+1);
         return vec.getUnitVec().scale(forceScalar);
     }
 
