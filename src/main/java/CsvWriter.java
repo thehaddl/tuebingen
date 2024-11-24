@@ -18,8 +18,9 @@ public class CsvWriter implements SimStepOutput, AutoCloseable {
     @Override
     public void writeStep(int round, Particle[] particles) {
         try {
+            writer.write("step,postion,velocity,charge,mass\n");
             for (var p : particles) {
-                writer.write(String.join(",", String.valueOf(round), toCSV(p.position), toCSV(p.velocity))+"\n");
+                writer.write(String.join(",", String.valueOf(round), toCSV(p.position), toCSV(p.velocity),Double.toString(p.charge),Double.toString(p.charge))+"\n");
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
