@@ -58,8 +58,7 @@ class Simulation {
             var force = new Vector(0, 0, 0);
             for (Particle other : subset) {
                 if (current != other) {
-                    force = force.add(current.getGravitationalForceWithoutSingularities(other)).scale(subsetSize).add(current.getElectricalForceWithoutSingularities(other).scale(subsetSize));
-
+                    force = force.add(current.getGravitationalForce(other)).scale(subsetSize).add(current.getElectricalForce(other).scale(subsetSize));
                 }
             }
             forces[i] = force;
