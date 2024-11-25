@@ -1,4 +1,5 @@
 import java.util.Random;
+
 public class ParticleSystem {
 
     private final Particle[] particles;
@@ -33,14 +34,13 @@ public class ParticleSystem {
         }
         return new ParticleSystem(particles);
     }
-    public void putRandomCharges(){
+
+    public void putRandomCharges() {
         Random r = new Random();
-        boolean a =  r.nextBoolean();
-        for(Particle p : this.particles){
-            if(a =true ) {
-                p.putCharge(r.nextDouble()*(-1));
-            }
-            else{
+        for (Particle p : this.particles) {
+            if (r.nextBoolean()) {
+                p.putCharge(r.nextDouble() * (-1));
+            } else {
                 p.putCharge(r.nextDouble());
             }
         }
@@ -60,5 +60,4 @@ public class ParticleSystem {
         }
         return deviation / this.particles.length;
     }
-
 }
