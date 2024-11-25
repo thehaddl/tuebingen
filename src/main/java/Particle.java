@@ -43,7 +43,7 @@ class Particle implements Cloneable {
     Vector getElectricalForce(Particle other) {
         var vec = other.position.subtract(this.position);
         var distance = vec.getMagnitude();
-        double forceScalar = (this.charge * other.charge) / ((distance * distance*4*Math.PI*ELECTRICFIELDCONST));
+        double forceScalar = -(this.charge * other.charge) / ((distance * distance*4*Math.PI*ELECTRICFIELDCONST));
         return vec.getUnitVec().scale(forceScalar);
     }
     //adjust gravitational for to prevent singularities
@@ -57,7 +57,7 @@ class Particle implements Cloneable {
     Vector getElectricalForceWithoutSingularities(Particle other) {
         var vec = other.position.subtract(this.position);
         var distance = vec.getMagnitude();
-        double forceScalar = (this.charge * other.charge) / ((distance * distance*4*Math.PI*ELECTRICFIELDCONST+1));
+        double forceScalar = -(this.charge * other.charge) / ((distance * distance*4*Math.PI*ELECTRICFIELDCONST+1));
         return vec.getUnitVec().scale(forceScalar);
     }
 
