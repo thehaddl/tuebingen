@@ -35,6 +35,14 @@ public class ParticleSystem {
         return new ParticleSystem(particles);
     }
 
+    public void putRandomVelocities(double dimension){
+        Random r = new Random();
+        for(Particle p : this.particles){
+            Vector vel = new Vector(r.nextDouble() * dimension, r.nextDouble() * dimension, r.nextDouble() * dimension);
+            p.setVelocity(vel);
+        }
+    }
+
     public void putRandomCharges() {
         Random r = new Random();
         for (Particle p : this.particles) {
@@ -42,6 +50,16 @@ public class ParticleSystem {
                 p.putCharge(r.nextDouble() * (-1));
             } else {
                 p.putCharge(r.nextDouble());
+            }
+        }
+    }
+    public void putRandomUniformCharges() {
+        Random r = new Random();
+        for (Particle p : this.particles) {
+            if (r.nextBoolean()) {
+                p.putCharge(-1);
+            } else {
+                p.putCharge(1);
             }
         }
     }
