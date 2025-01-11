@@ -32,6 +32,9 @@ class Particle implements Cloneable {
     public void putCharge(double c) {
         this.charge = c;
     }
+    public void setVelocity(Vector vel){
+        this.velocity = vel;
+    }
     //term for the gravitational force
     Vector getGravitationalForce(Particle other) {
         var vec = other.position.subtract(this.position);
