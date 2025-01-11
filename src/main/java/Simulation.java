@@ -22,29 +22,23 @@ class Simulation {
         this.output = output;
     }
 
-    //runs simulation with all particles (n^2 terms)
+    //runs simulation with all particles (n*(n-1) terms)
     public ParticleSystem runSim(ParticleSystem initial){
-        long startTime = System.nanoTime();
         Particle[] particles = initial.getParticles();
         for (int s = 0; s < steps; s++) {
             output.writeStep(s, particles);
             runSimStep(particles, particles);
         }
-        long stopTime = System.nanoTime();
-        runTimeAll = stopTime-startTime;
         return ParticleSystem.createFrom(particles);
     }
 
-    //runs simulation with a given subset (only k terms)
+    //runs simulation with a given subset (only k * n terms)
     public ParticleSystem runSimWithSubset(ParticleSystem initial, int subsetSize){
-        long startTime = System.nanoTime();
         Particle[] particles = initial.getParticles();
         for (int s = 0; s < steps; s++) {
             output.writeStep(s, particles);
             runSimStep(particles, randomSubset(particles, subsetSize));
         }
-        long stopTime = System.nanoTime();
-        runTimeSub = stopTime-startTime;
         return ParticleSystem.createFrom(particles);
 
     }
@@ -57,8 +51,11 @@ class Simulation {
             var current = particles[i];
             var force = new Vector(0, 0, 0);
             for (Particle other : subset) {
-                if (current != other) {
-                    force = force.add(current.getGravitationalForce(other)).scale(subsetSize).add(current.getElectricalForce(other).scale(subsetSize));
+                if (current !=  other) {
+                    force = force.add(current.getGravitationalForceWithoutSingularities(other)).scale(subsetSize);
+                    //force = force.add(current.getSwarmForce(other));
+                    //force = force.add(current.getElectricalForceWithoutSingularities(other)).scale(subsetSize);
+                    //force = force.add(current.getElectricalForce(other)).scale(subsetSize);
                 }
             }
             forces[i] = force;
@@ -67,7 +64,7 @@ class Simulation {
         for (int i = 0; i < particles.length; i++) {
             var f = forces[i];
             var p = particles[i];
-            p.velocity = p.velocity.add(f.scale(dt));
+            p.velocity = p.velocity.add(f.scale(dt).scale((double)1/p.mass));
             p.position = p.position.add(p.velocity.scale(dt));
         }
     }
