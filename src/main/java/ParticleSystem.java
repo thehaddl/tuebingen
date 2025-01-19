@@ -80,4 +80,5 @@ public class ParticleSystem {
         }
         return deviation / this.particles.length;
     }
+
 }

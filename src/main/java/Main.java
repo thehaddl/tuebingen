@@ -13,6 +13,7 @@ class Main {
              var outputSubset = new CsvWriter(Path.of("subparticles.csv"))) {
 
             f.write("k,d\n");
+
 //            Particle[] p = new Particle[2];
 //            p[0]= new Particle(new Vector(1,1,1),new Vector(0,0,0),1,0);
 //            p[1]= new Particle(new Vector(-1,-1,-1),new Vector(0,0,0),1,0);
@@ -21,6 +22,7 @@ class Main {
             //initial.putRandomVelocities(dimension/100);
 
             Simulation s = new Simulation(steps, 1000);
+
             s.setOutput(outputAll);
             var resultAllParticles = s.runSim(initial);
             s.setOutput(outputSubset);
@@ -32,6 +34,7 @@ class Main {
 //                f.append((double) i/nP + "," + averageDeviation+ "\n");
 //                f.flush();
 //            }
+
 
         }
     }
