@@ -43,7 +43,7 @@ public class ParticleSystem {
             p.setVelocity(vel);
         }
     }
-
+    //future purpose
     public void putRandomCharges() {
         Random r = new Random();
         for (Particle p : this.particles) {
@@ -54,6 +54,7 @@ public class ParticleSystem {
             }
         }
     }
+    //future purpose
     public void putRandomUniformCharges() {
         Random r = new Random();
         for (Particle p : this.particles) {
