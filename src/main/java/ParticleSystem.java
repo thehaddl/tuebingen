@@ -29,7 +29,8 @@ public class ParticleSystem {
         var particles = new Particle[particleCount];
         for (int i = 0; i < particleCount; i++) {
             Vector vel = new Vector(0, 0, 0);
-            Vector pos = new Vector(r.nextDouble() * dimension, r.nextDouble() * dimension, r.nextDouble() * dimension);
+            Vector pos = Vector.fromPolar(r.nextDouble() * dimension, r.nextDouble() * Math.PI *2, r.nextDouble() * Math.PI *2);
+            //Vector pos = new Vector(r.nextDouble() * dimension,r.nextDouble() * dimension,r.nextDouble() * dimension);
             particles[i] = new Particle(pos, vel);
         }
         return new ParticleSystem(particles);
@@ -38,7 +39,7 @@ public class ParticleSystem {
     public void putRandomVelocities(double dimension){
         Random r = new Random();
         for(Particle p : this.particles){
-            Vector vel = new Vector(r.nextDouble() * dimension, r.nextDouble() * dimension, r.nextDouble() * dimension);
+            Vector vel = Vector.fromPolar(r.nextDouble() * dimension, r.nextDouble()*2 * Math.PI, r.nextDouble()*2 * Math.PI);
             p.setVelocity(vel);
         }
     }

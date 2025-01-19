@@ -45,21 +45,23 @@ class Simulation {
     // calculates a general Simulation Step (when k = n then subset is just all particles)
     private void runSimStep(Particle[] particles, Particle[] subset) {
         var forces = new Vector[particles.length];
-        var subsetSize = 1.0/subset.length;
+        double GRAVITY = 1.0/subset.length;
         //step 1: calculate forces
         for (int i = 0; i < particles.length; i++) {
             var current = particles[i];
             var force = new Vector(0, 0, 0);
             for (Particle other : subset) {
                 if (current !=  other) {
-                    force = force.add(current.getGravitationalForceWithoutSingularities(other)).scale(subsetSize);
+                    force = force.add(current.getGravitationalForceWithoutSingularities(other)).scale(GRAVITY);
                     //force = force.add(current.getSwarmForce(other));
                     //force = force.add(current.getElectricalForceWithoutSingularities(other)).scale(subsetSize);
                     //force = force.add(current.getElectricalForce(other)).scale(subsetSize);
                 }
             }
+
             forces[i] = force;
         }
+
         // step 2: calculate new velocities and positions
         for (int i = 0; i < particles.length; i++) {
             var f = forces[i];
