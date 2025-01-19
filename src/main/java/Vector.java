@@ -5,7 +5,13 @@ class Vector {
     final double[] components;
 
     Vector(double x, double y, double z) {
-        components = new double[]{x, y, z};
+        components = new double[]{ x, y, z};
+    }
+    public static Vector fromPolar(double r, double angleX,double angleZ){
+        double x = r*Math.sin(angleX)*Math.sin(angleZ);
+        double y = r*Math.cos(angleX)*Math.sin(angleZ);
+        double z = r*Math.cos(angleZ);
+        return new Vector(x,y,z);
     }
 
     public Vector add(Vector v) {

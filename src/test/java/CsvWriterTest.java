@@ -32,7 +32,7 @@ public class CsvWriterTest {
 
         // Verify
         String actual = Files.readString(pt);
-        assertEquals("17,1.0,2.0,3.0,2.0,3.0,4.0\n17,3.0,4.0,5.0,4.0,5.0,6.0\n", actual);
+        assertEquals("step,position_x,position_y,position_z,velocity_x,velocity_y,velocity_z,charge,mass\n17,1.0,2.0,3.0,2.0,3.0,4.0,0.0,1.0\n17,3.0,4.0,5.0,4.0,5.0,6.0,0.0,1.0\n", actual);
 
     }
 }

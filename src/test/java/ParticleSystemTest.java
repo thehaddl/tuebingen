@@ -36,7 +36,7 @@ public class ParticleSystemTest {
     }
 
     @Test
-    void createRandomPosition_should_return_System_with_random_positions(){
+    void createRandomParticles_should_return_System_with_random_positions_and_charges(){
         ParticleSystem p = ParticleSystem.createRandomPositions(17,100);
         
         assertEquals(17,p.getParticles().length);
