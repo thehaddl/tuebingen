@@ -5,9 +5,6 @@ class Simulation {
     private final double runTime;
     private final int steps;
     private final double dt;
-    long runTimeAll;
-    long runTimeSub;
-
     private SimStepOutput output = SimStepOutput.NOP;
 
 
@@ -53,9 +50,6 @@ class Simulation {
             for (Particle other : subset) {
                 if (current !=  other) {
                     force = force.add(current.getGravitationalForceWithoutSingularities(other)).scale(GRAVITY);
-                    //force = force.add(current.getSwarmForce(other));
-                    //force = force.add(current.getElectricalForceWithoutSingularities(other)).scale(subsetSize);
-                    //force = force.add(current.getElectricalForce(other)).scale(subsetSize);
                 }
             }
 
