@@ -32,9 +32,13 @@ class Simulation {
     //runs simulation with a given subset (only k * n terms)
     public ParticleSystem runSimWithSubset(ParticleSystem initial, int subsetSize){
         Particle[] particles = initial.getParticles();
-        for (int s = 0; s < steps; s++) {
-            output.writeStep(s, particles);
+        output.writeStep(0, particles);
+        for (int s = 1; s < steps; s++) {
             runSimStep(particles, randomSubset(particles, subsetSize));
+            output.writeStep(s, particles);
+            for(Particle p:particles){
+                p.inuse=false;
+            }
         }
         return ParticleSystem.createFrom(particles);
 
@@ -50,6 +54,9 @@ class Simulation {
             for (Particle other : subset) {
                 if (current !=  other) {
                     force = force.add(current.getGravitationalForceWithoutSingularities(other)).scale(GRAVITY);
+                }
+                else{
+                    current.inuse=true;
                 }
             }
 
@@ -70,7 +77,9 @@ class Simulation {
         List<Particle> particleList = new ArrayList();
         Collections.addAll(particleList, particles);
         Collections.shuffle(particleList,random);
-        return particleList.subList(0, k).toArray(new Particle[0]);
+        var rp = particleList.subList(0, k).toArray(new Particle[0]);
+
+        return rp;
     }
 
 }

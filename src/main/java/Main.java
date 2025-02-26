@@ -4,7 +4,7 @@ import java.nio.file.Path;
 
 class Main {
     static final int nP = 1000;
-    static final int nPs = 1000;
+    static final int nPs = 100;
     static final int steps = 1000;
     static final double dimension = 10 ;
     public static void main(String[] args) throws IOException {
@@ -18,12 +18,15 @@ class Main {
 //            p[1]= new Particle(new Vector(-1,-1,-1),new Vector(0,0,0),1,0);
 //            ParticleSystem initial = ParticleSystem.createFrom(p);
             ParticleSystem initial = ParticleSystem.createRandomPositions(nP,dimension);
+            initial.putIDs();
             //initial.putRandomVelocities(dimension/100);
 
             Simulation s = new Simulation(steps, 1000);
             s.setOutput(outputAll);
             var resultAllParticles = s.runSim(initial);
             s.setOutput(outputSubset);
+            var resultSubParticles = s.runSimWithSubset(initial,nPs);
+
 //            for (int i = 1; i <= nPs; i++) {
 //                var resultSubParticles = s.runSimWithSubset(initial, i);
 //                double averageDeviation = resultSubParticles.calcAverageDeviation(resultAllParticles);

@@ -1,34 +1,34 @@
 class Particle implements Cloneable {
-
+    boolean inuse;
     double mass;
-    double charge;
+    int id;
     Vector position;
     Vector velocity;
 
     //standard particle
     public Particle(Vector pos, Vector vel) {
         mass = 1;
-        charge = 0;
+        inuse = false ;
         this.position = pos;
         this.velocity = vel;
     }
     //particle with specified mass and charge
-    public Particle(Vector pos, Vector vel, double m, double c) {
+    public Particle(Vector pos, Vector vel, double m, int id) {
         mass = m;
-        charge = c;
+        this.id = id;
         this.position = pos;
         this.velocity = vel;
     }
     //copy constructor
     public Particle(Particle p) {
         mass = p.mass;
-        charge = p.charge;
+        id = p.id;
         this.position = p.position;
         this.velocity = p.velocity;
     }
     //puts new charge on existing particle
-    public void putCharge(double c) {
-        this.charge = c;
+    public void putID(int id) {
+        this.id = id;
     }
     public void setVelocity(Vector vel){
         this.velocity = vel;

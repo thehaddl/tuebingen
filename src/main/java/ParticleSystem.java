@@ -44,27 +44,15 @@ public class ParticleSystem {
         }
     }
     //future purpose
-    public void putRandomCharges() {
+    public void putIDs() {
         Random r = new Random();
+        int i = 1;
         for (Particle p : this.particles) {
-            if (r.nextBoolean()) {
-                p.putCharge(r.nextDouble() * (-1));
-            } else {
-                p.putCharge(r.nextDouble());
-            }
+            p.putID(i);
+            i+=1;
         }
     }
-    //future purpose
-    public void putRandomUniformCharges() {
-        Random r = new Random();
-        for (Particle p : this.particles) {
-            if (r.nextBoolean()) {
-                p.putCharge(-1);
-            } else {
-                p.putCharge(1);
-            }
-        }
-    }
+
 
 
     public static ParticleSystem createFrom(Particle[] particles) {
