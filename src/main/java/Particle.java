@@ -3,7 +3,7 @@ class Particle implements Cloneable {
     boolean inuse;
     double mass;
     int id;
-    int charge;
+    double charge;
     Vector position;
     Vector velocity;
 

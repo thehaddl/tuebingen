@@ -21,7 +21,7 @@ public class CsvWriter implements SimStepOutput, AutoCloseable {
         try {
             for (var p : particles) {
 
-                writer.write(String.join(",", String.valueOf(round), toCSV(p.position), toCSV(p.velocity),Integer.toString(p.id),Boolean.toString(p.inuse),Integer.toString(p.charge)+"\n"));
+                writer.write(String.join(",", String.valueOf(round), toCSV(p.position), toCSV(p.velocity),Integer.toString(p.id),Boolean.toString(p.inuse), p.charge +"\n"));
 
             }
         } catch (IOException e) {
