@@ -12,7 +12,7 @@ public class CsvWriter implements SimStepOutput, AutoCloseable {
 
     public CsvWriter(Path  file) throws IOException {
         writer = Files.newBufferedWriter(file);
-        writer.write("step,position_x,position_y,position_z,velocity_x,velocity_y,velocity_z,ID,inuse\n");
+        writer.write("step,position_x,position_y,position_z,velocity_x,velocity_y,velocity_z,ID,inuse,charge\n");
 
     }
 
@@ -21,7 +21,7 @@ public class CsvWriter implements SimStepOutput, AutoCloseable {
         try {
             for (var p : particles) {
 
-                writer.write(String.join(",", String.valueOf(round), toCSV(p.position), toCSV(p.velocity),Integer.toString(p.id),Boolean.toString(p.inuse))+"\n");
+                writer.write(String.join(",", String.valueOf(round), toCSV(p.position), toCSV(p.velocity),Integer.toString(p.id),Boolean.toString(p.inuse),Integer.toString(p.charge)+"\n"));
 
             }
         } catch (IOException e) {
