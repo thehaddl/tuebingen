@@ -1,5 +1,6 @@
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 class Simulation {
     private final int steps;
@@ -43,26 +44,26 @@ class Simulation {
         return ParticleSystem.createFrom(particles);
 
     }
-    // calculates a general Simulation Step (when k = n then subset is just all particles)
+    // calculates a general Simulation Step (if k = n then subset is just all particles, however results differ because of numeric error)
 
     private void runSimStep(List<Particle> particles, List<Particle> subset) {
         List<Vector> forces = new ArrayList<>();
         double GRAVITY = 1.0/subset.size();
-        //step 1: calculate forces
-        for (Particle current : particles) {
-            var force = new Vector(0, 0, 0);
-            for (Particle other : subset) {
-                if (current != other) {
-                    force = force.add(current.getGravitationalForceWithoutSingularities(other));
-                }
-                else{
-                    current.inuse=true;
-                }
-            }
-            force.scale(GRAVITY);
+        List<Vector> forces = particles.parallelStream()
+                .map(current -> {
+                    var force = new Vector(0, 0, 0);
+                    for (Particle other : subset) {
+                        if (current != other) {
+                            force = force.add(current.getGravitationalForceWithoutSingularities(other));
+                        } else {
+                            current.inuse = true;
+                        }
+                    }
+                    force.scale(GRAVITY);
+                    return force;  // Note: removed the scale call above, doing it here
+                })
+                .collect(Collectors.toList());
 
-            forces.add(force);
-        }
 
         // step 2: calculate new velocities and positions
         for (int i = 0; i < particles.size(); i++) {
