@@ -17,7 +17,7 @@ class Particle implements Cloneable {
     }
     //particle with specified mass and charge
 
-    public Particle(Vector pos, Vector vel, double m, int id) {
+    public Particle(Vector pos, Vector vel, double m, int id,int charge) {
         mass = m;
         this.id = id;
         this.position = pos;
