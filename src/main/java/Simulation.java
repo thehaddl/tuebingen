@@ -48,18 +48,18 @@ class Simulation {
 
     private void runSimStep(List<Particle> particles, List<Particle> subset) {
 
-        double GRAVITY = 1.0/subset.size();
+        double COUPLINGCONST = 1.0/subset.size();
         List<Vector> forces = particles.parallelStream()
                 .map(current -> {
                     var force = new Vector(0, 0, 0);
                     for (Particle other : subset) {
                         if (current != other) {
-                            force = force.add(current.getGravitationalForceWithoutSingularities(other));
+                            force = force.add(current.getCouloumbForce(other));
                         } else {
                             current.inuse = true;
                         }
                     }
-                    force.scale(GRAVITY);
+                    force.scale(COUPLINGCONST);
                     return force;  // Note: removed the scale call above, doing it here
                 })
                 .collect(Collectors.toList());
