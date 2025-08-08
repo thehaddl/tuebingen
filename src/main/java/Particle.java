@@ -58,6 +58,12 @@ class Particle implements Cloneable {
         double forceScalar = (this.mass * other.mass) / ((distance * distance)+10);
         return vec.getUnitVec().scale(forceScalar);
     }
+    Vector getCouloumbForce(Particle other){
+        var vec = this.position.subtract(other.position);
+        var distance = vec.getMagnitude();
+        double forceScalar=(this.charge * other.charge) / ((distance * distance));
+        return vec.getUnitVec().scale(forceScalar);
+    }
 
     //not yet validated
     Vector getSwarmForce(Particle other){
