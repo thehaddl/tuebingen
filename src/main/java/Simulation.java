@@ -47,7 +47,7 @@ class Simulation {
     // calculates a general Simulation Step (if k = n then subset is just all particles, however results differ because of numeric error)
 
     private void runSimStep(List<Particle> particles, List<Particle> subset) {
-        List<Vector> forces = new ArrayList<>();
+
         double GRAVITY = 1.0/subset.size();
         List<Vector> forces = particles.parallelStream()
                 .map(current -> {
