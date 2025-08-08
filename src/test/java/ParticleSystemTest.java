@@ -21,20 +21,24 @@ public class ParticleSystemTest {
     @Test
     void getParticles_should_return_particles () {
         // setup
+
         List<Particle> p1 = new ArrayList();
 
         p1.add(new Particle(new Vector(1,1,0), new Vector(1,2,3)));
         p1.add(new Particle(new Vector(-1,-1,0), new Vector(4,5,6.5)));
 
+
         ParticleSystem p = ParticleSystem.createFrom(p1);
         //execute
         var actual = p.getParticles();
         // verify
+
         assertEquals(2,actual.size());
         assertEquals(new Vector(1,1,0), actual.get(0).position);
         assertEquals(new Vector(1,2,3), actual.get(0).velocity);
         assertEquals(new Vector(-1,-1,0), actual.get(1).position);
         assertEquals(new Vector(4,5,6.5), actual.get(1).velocity);
+
     }
 
     @Test
@@ -53,6 +57,7 @@ public class ParticleSystemTest {
     @Test
     void calcAverageDeviation_should_return_average_deviation() {
         // setup
+
         List<Particle> p1 = new ArrayList();
         p1.add(new Particle(new Vector(1,2,3), new Vector(2,3,4)));
         p1.add(new Particle(new Vector(3,4,5), new Vector(4,5,6.1)));
@@ -60,6 +65,7 @@ public class ParticleSystemTest {
         List<Particle> p2 = new ArrayList();
         p2.add(new Particle(new Vector(1.1,2,3), new Vector(2.1,3,4)));
         p2.add(new Particle(new Vector(3.1,4,5.1), new Vector(4,5.1,6)));
+
         ParticleSystem reference = ParticleSystem.createFrom(p2);
         //execute
         var actual = current.calcAverageDeviation(reference);

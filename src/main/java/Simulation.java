@@ -19,7 +19,9 @@ class Simulation {
 
     //runs simulation with all particles (n*(n-1) terms)
     public ParticleSystem runSim(ParticleSystem initial){
+
         List<Particle> particles = initial.getParticles();
+
         for (int s = 0; s < steps; s++) {
             output.writeStep(s, particles);
             runSimStep(particles, particles);
@@ -33,11 +35,16 @@ class Simulation {
         for (int s = 0; s < steps; s++) {
             output.writeStep(s, particles);
             runSimStep(particles, randomSubset(particles, subsetSize));
+            output.writeStep(s, particles);
+            for(Particle p:particles){
+                p.inuse=false;
+            }
         }
         return ParticleSystem.createFrom(particles);
 
     }
     // calculates a general Simulation Step (when k = n then subset is just all particles)
+
     private void runSimStep(List<Particle> particles, List<Particle> subset) {
         List<Vector> forces = new ArrayList<>();
         double GRAVITY = 1.0/subset.size();
@@ -47,6 +54,9 @@ class Simulation {
             for (Particle other : subset) {
                 if (current != other) {
                     force = force.add(current.getGravitationalForceWithoutSingularities(other));
+                }
+                else{
+                    current.inuse=true;
                 }
             }
             force.scale(GRAVITY);
@@ -63,10 +73,12 @@ class Simulation {
         }
     }
     //needs to be refactored into ParticleSystem class
+
     private List<Particle> randomSubset(List<Particle> particles, int k) {
         Random random = new Random();
         Collections.shuffle(particles,random);
         return particles.subList(0, k);
+
     }
 
 }

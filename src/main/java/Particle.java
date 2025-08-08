@@ -1,34 +1,39 @@
 class Particle implements Cloneable {
 
+    boolean inuse;
     double mass;
-    double charge;
+    int id;
+
     Vector position;
     Vector velocity;
 
     //standard particle
     public Particle(Vector pos, Vector vel) {
         mass = 1;
-        charge = 0;
+        inuse = false ;
         this.position = pos;
         this.velocity = vel;
     }
     //particle with specified mass and charge
-    public Particle(Vector pos, Vector vel, double m, double c) {
+
+    public Particle(Vector pos, Vector vel, double m, int id) {
         mass = m;
-        charge = c;
+        this.id = id;
         this.position = pos;
         this.velocity = vel;
     }
     //copy constructor
     public Particle(Particle p) {
         mass = p.mass;
-        charge = p.charge;
+        id = p.id;
         this.position = p.position;
         this.velocity = p.velocity;
     }
     //puts new charge on existing particle
-    public void putCharge(double c) {
-        this.charge = c;
+
+    public void putID(int id) {
+        this.id = id;
+
     }
     public void setVelocity(Vector vel){
         this.velocity = vel;
@@ -40,13 +45,14 @@ class Particle implements Cloneable {
         double forceScalar = (this.mass * other.mass) / ((distance * distance));
         return vec.getUnitVec().scale(forceScalar);
     }
-    //adjust gravitational for to prevent singularities
+    //adjust gravitational force to prevent singularities
     Vector getGravitationalForceWithoutSingularities(Particle other) {
         var vec = other.position.subtract(this.position);
         var distance = vec.getMagnitude();
-        double forceScalar = (this.mass * other.mass) / ((distance * distance));
+        double forceScalar = (this.mass * other.mass) / ((distance * distance)+10);
         return vec.getUnitVec().scale(forceScalar);
     }
+
     //not yet validated
     Vector getSwarmForce(Particle other){
         var vec = other.position.subtract(this.position);

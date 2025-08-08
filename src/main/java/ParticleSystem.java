@@ -1,3 +1,4 @@
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -46,25 +47,13 @@ public class ParticleSystem {
         }
     }
     //future purpose
-    public void putRandomCharges() {
+
+    public void putIDs() {
         Random r = new Random();
+        int i = 1;
         for (Particle p : this.particles) {
-            if (r.nextBoolean()) {
-                p.putCharge(r.nextDouble() * (-1));
-            } else {
-                p.putCharge(r.nextDouble());
-            }
-        }
-    }
-    //future purpose
-    public void putRandomUniformCharges() {
-        Random r = new Random();
-        for (Particle p : this.particles) {
-            if (r.nextBoolean()) {
-                p.putCharge(-1);
-            } else {
-                p.putCharge(1);
-            }
+            p.putID(i);
+            i+=1;
         }
     }
 
@@ -75,10 +64,12 @@ public class ParticleSystem {
             copy.add(new Particle(p));
         }
         return new ParticleSystem(copy);
+
     }
 
     public double calcAverageDeviation(ParticleSystem reference) {
         double deviation = 0.0;
+
         for (int i = 0; i < this.particles.size(); i++) {
             Particle a = this.particles.get(i);
             Particle b = reference.particles.get(i);
