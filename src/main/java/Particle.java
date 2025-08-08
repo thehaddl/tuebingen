@@ -37,7 +37,7 @@ class Particle implements Cloneable {
         this.id = id;
 
     }
-    public void putCharge(int charge){
+    public void putCharge(double charge){
         this.charge = charge;
     }
 
