@@ -39,14 +39,19 @@ public class ParticleSystem {
         return new ParticleSystem(particles);
     }
 
-    public void putRandomVelocities(double dimension){
+
+    //future purpose
+    public void putRandomCharges(){
         Random r = new Random();
-        for(Particle p : this.particles){
-            Vector vel = Vector.fromPolar(r.nextDouble() * dimension, r.nextDouble()*2 * Math.PI, r.nextDouble()*2 * Math.PI);
-            p.setVelocity(vel);
+        for(Particle p: this.particles){
+            if(r.nextBoolean()){
+                p.putCharge(1);
+            }
+            else{
+                p.putCharge(-1);
+            }
         }
     }
-    //future purpose
 
     public void putIDs() {
         Random r = new Random();
