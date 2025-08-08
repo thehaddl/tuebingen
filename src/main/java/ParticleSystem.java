@@ -1,4 +1,3 @@
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -13,8 +12,8 @@ public class ParticleSystem {
 
     public List<Particle>  getParticles() {
         List<Particle> copy = new ArrayList<>();
-        for (int i = 0; i < particles.size(); i++) {
-            copy.add(new Particle(particles.get(i)));
+        for (Particle particle : particles) {
+            copy.add(new Particle(particle));
         }
         return copy;
     }

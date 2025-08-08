@@ -2,7 +2,6 @@ import java.util.*;
 import java.util.List;
 
 class Simulation {
-    private final double runTime;
     private final int steps;
     private final double dt;
     private SimStepOutput output = SimStepOutput.NOP;
@@ -10,7 +9,6 @@ class Simulation {
 
     public Simulation(int steps, double runTime) {
         this.steps = steps;
-        this.runTime = runTime;
         dt = runTime/steps;
 
     }
@@ -44,11 +42,10 @@ class Simulation {
         List<Vector> forces = new ArrayList<>();
         double GRAVITY = 1.0/subset.size();
         //step 1: calculate forces
-        for (int i = 0; i < particles.size(); i++) {
-            var current = particles.get(i);
+        for (Particle current : particles) {
             var force = new Vector(0, 0, 0);
             for (Particle other : subset) {
-                if (current !=  other) {
+                if (current != other) {
                     force = force.add(current.getGravitationalForceWithoutSingularities(other));
                 }
             }
