@@ -1,12 +1,11 @@
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -21,13 +20,12 @@ public class CsvWriterTest {
 
         // setup
         Path pt = dir.resolve("output.csv");
-
+        List<Particle> l = new ArrayList<>();
+        l.add(new Particle(new Vector(1, 2, 3), new Vector(2, 3, 4)));
+        l.add(new Particle(new Vector(3, 4, 5), new Vector(4, 5, 6)));
         //execute
         try (var c = new CsvWriter(pt)) {
-            c.writeStep(17, new Particle[]{
-                    new Particle(new Vector(1, 2, 3), new Vector(2, 3, 4)),
-                    new Particle(new Vector(3, 4, 5), new Vector(4, 5, 6))
-            });
+            c.writeStep(17, l);
         }
 
         // Verify

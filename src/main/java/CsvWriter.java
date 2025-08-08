@@ -1,10 +1,9 @@
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class CsvWriter implements SimStepOutput, AutoCloseable {
@@ -17,7 +16,7 @@ public class CsvWriter implements SimStepOutput, AutoCloseable {
     }
 
     @Override
-    public void writeStep(int round, Particle[] particles) {
+    public void writeStep(int round, List<Particle> particles) {
         try {
             for (var p : particles) {
                 writer.write(String.join(",", String.valueOf(round), toCSV(p.position), toCSV(p.velocity),Double.toString(p.charge),Double.toString(p.mass))+"\n");
