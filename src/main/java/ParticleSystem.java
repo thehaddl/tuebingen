@@ -1,17 +1,20 @@
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class ParticleSystem {
 
-    private final Particle[] particles;
+    private final List<Particle> particles;
 
-    private ParticleSystem(Particle[] particles) {
+    private ParticleSystem(List<Particle>  particles) {
         this.particles = particles;
     }
 
-    public Particle[] getParticles() {
-        Particle[] copy = new Particle[particles.length];
-        for (int i = 0; i < particles.length; i++) {
-            copy[i] = new Particle(particles[i]);
+    public List<Particle>  getParticles() {
+        List<Particle> copy = new ArrayList<>();
+        for (Particle particle : particles) {
+            copy.add(new Particle(particle));
         }
         return copy;
     }
@@ -21,17 +24,17 @@ public class ParticleSystem {
         for (var p : this.particles) {
             sum = sum.add(p.position);
         }
-        return sum.scale(1.0 / particles.length);
+        return sum.scale(1.0 / particles.size());
     }
 
     public static ParticleSystem createRandomPositions(int particleCount, double dimension) {
         Random r = new Random();
-        var particles = new Particle[particleCount];
+        List<Particle> particles = new ArrayList<>();
         for (int i = 0; i < particleCount; i++) {
             Vector vel = new Vector(0, 0, 0);
             Vector pos = Vector.fromPolar(r.nextDouble() * dimension, r.nextDouble() * Math.PI *2, r.nextDouble() * Math.PI *2);
             //Vector pos = new Vector(r.nextDouble() * dimension,r.nextDouble() * dimension,r.nextDouble() * dimension);
-            particles[i] = new Particle(pos, vel);
+            particles.add(new Particle(pos, vel));
         }
         return new ParticleSystem(particles);
     }
@@ -44,6 +47,7 @@ public class ParticleSystem {
         }
     }
     //future purpose
+
     public void putIDs() {
         Random r = new Random();
         int i = 1;
@@ -54,18 +58,24 @@ public class ParticleSystem {
     }
 
 
+    public static ParticleSystem createFrom(List<Particle> particles) {
+        List<Particle> copy = new ArrayList<>();
+        for(Particle p: particles){
+            copy.add(new Particle(p));
+        }
+        return new ParticleSystem(copy);
 
-    public static ParticleSystem createFrom(Particle[] particles) {
-        return new ParticleSystem(particles.clone());
     }
 
     public double calcAverageDeviation(ParticleSystem reference) {
         double deviation = 0.0;
-        for (int i = 0; i < this.particles.length; i++) {
-            Particle a = this.particles[i];
-            Particle b = reference.particles[i];
+
+        for (int i = 0; i < this.particles.size(); i++) {
+            Particle a = this.particles.get(i);
+            Particle b = reference.particles.get(i);
             deviation += a.position.subtract(b.position).getMagnitude();
         }
-        return deviation / this.particles.length;
+        return deviation / this.particles.size();
     }
+
 }

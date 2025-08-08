@@ -1,7 +1,9 @@
 class Particle implements Cloneable {
+
     boolean inuse;
     double mass;
     int id;
+
     Vector position;
     Vector velocity;
 
@@ -13,6 +15,7 @@ class Particle implements Cloneable {
         this.velocity = vel;
     }
     //particle with specified mass and charge
+
     public Particle(Vector pos, Vector vel, double m, int id) {
         mass = m;
         this.id = id;
@@ -27,8 +30,10 @@ class Particle implements Cloneable {
         this.velocity = p.velocity;
     }
     //puts new charge on existing particle
+
     public void putID(int id) {
         this.id = id;
+
     }
     public void setVelocity(Vector vel){
         this.velocity = vel;
@@ -40,13 +45,14 @@ class Particle implements Cloneable {
         double forceScalar = (this.mass * other.mass) / ((distance * distance));
         return vec.getUnitVec().scale(forceScalar);
     }
-    //adjust gravitational for to prevent singularities
+    //adjust gravitational force to prevent singularities
     Vector getGravitationalForceWithoutSingularities(Particle other) {
         var vec = other.position.subtract(this.position);
         var distance = vec.getMagnitude();
-        double forceScalar = (this.mass * other.mass) / ((distance * distance));
+        double forceScalar = (this.mass * other.mass) / ((distance * distance)+10);
         return vec.getUnitVec().scale(forceScalar);
     }
+
     //not yet validated
     Vector getSwarmForce(Particle other){
         var vec = other.position.subtract(this.position);
