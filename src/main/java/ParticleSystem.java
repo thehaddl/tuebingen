@@ -45,16 +45,15 @@ public class ParticleSystem {
         Random r = new Random();
         for(Particle p: this.particles){
             if(r.nextBoolean()){
-                p.putCharge(1);
+                p.putCharge(Math.round(r.nextDouble() * 100.0) / 10.0);
             }
             else{
-                p.putCharge(-1);
+                p.putCharge(-Math.round(r.nextDouble() * 100.0) / 10.0);
             }
         }
     }
 
     public void putIDs() {
-        Random r = new Random();
         int i = 1;
         for (Particle p : this.particles) {
             p.putID(i);
