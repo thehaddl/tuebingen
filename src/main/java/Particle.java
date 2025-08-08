@@ -3,13 +3,14 @@ class Particle implements Cloneable {
     boolean inuse;
     double mass;
     int id;
-
+    int charge;
     Vector position;
     Vector velocity;
 
     //standard particle
     public Particle(Vector pos, Vector vel) {
         mass = 1;
+        charge = 0;
         inuse = false ;
         this.position = pos;
         this.velocity = vel;
@@ -21,6 +22,7 @@ class Particle implements Cloneable {
         this.id = id;
         this.position = pos;
         this.velocity = vel;
+        this.charge = charge;
     }
     //copy constructor
     public Particle(Particle p) {
@@ -35,6 +37,10 @@ class Particle implements Cloneable {
         this.id = id;
 
     }
+    public void putCharge(int charge){
+        this.charge = charge;
+    }
+
     public void setVelocity(Vector vel){
         this.velocity = vel;
     }
