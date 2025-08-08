@@ -21,7 +21,7 @@ class Simulation {
 
     //runs simulation with all particles (n*(n-1) terms)
     public ParticleSystem runSim(ParticleSystem initial){
-        Particle[] particles = initial.getParticles();
+        List<Particle> particles = initial.getParticles();
         for (int s = 0; s < steps; s++) {
             output.writeStep(s, particles);
             runSimStep(particles, particles);
@@ -31,7 +31,7 @@ class Simulation {
 
     //runs simulation with a given subset (only k * n terms)
     public ParticleSystem runSimWithSubset(ParticleSystem initial, int subsetSize){
-        Particle[] particles = initial.getParticles();
+        List<Particle> particles = initial.getParticles();
         for (int s = 0; s < steps; s++) {
             output.writeStep(s, particles);
             runSimStep(particles, randomSubset(particles, subsetSize));
@@ -40,12 +40,12 @@ class Simulation {
 
     }
     // calculates a general Simulation Step (when k = n then subset is just all particles)
-    private void runSimStep(Particle[] particles, Particle[] subset) {
-        var forces = new Vector[particles.length];
-        double GRAVITY = 1.0/subset.length;
+    private void runSimStep(List<Particle> particles, List<Particle> subset) {
+        List<Vector> forces = new ArrayList<>();
+        double GRAVITY = 1.0/subset.size();
         //step 1: calculate forces
-        for (int i = 0; i < particles.length; i++) {
-            var current = particles[i];
+        for (int i = 0; i < particles.size(); i++) {
+            var current = particles.get(i);
             var force = new Vector(0, 0, 0);
             for (Particle other : subset) {
                 if (current !=  other) {
@@ -54,24 +54,22 @@ class Simulation {
             }
             force.scale(GRAVITY);
 
-            forces[i] = force;
+            forces.add(force);
         }
 
         // step 2: calculate new velocities and positions
-        for (int i = 0; i < particles.length; i++) {
-            var f = forces[i];
-            var p = particles[i];
+        for (int i = 0; i < particles.size(); i++) {
+            var f = forces.get(i);
+            var p = particles.get(i);
             p.velocity = p.velocity.add(f.scale(dt).scale((double)1/p.mass));
             p.position = p.position.add(p.velocity.scale(dt));
         }
     }
     //needs to be refactored into ParticleSystem class
-    private Particle[] randomSubset(Particle[] particles, int k) {
+    private List<Particle> randomSubset(List<Particle> particles, int k) {
         Random random = new Random();
-        List<Particle> particleList = new ArrayList();
-        Collections.addAll(particleList, particles);
-        Collections.shuffle(particleList,random);
-        return particleList.subList(0, k).toArray(new Particle[0]);
+        Collections.shuffle(particles,random);
+        return particles.subList(0, k);
     }
 
 }
