@@ -4,10 +4,10 @@ import java.nio.file.Path;
 
 class Main {
 
-    static final int nP = 1000;
+    static final int nP = 500;
     static final int nPs = 100;
-    static final int steps = 1000;
-    static final double dimension = 10 ;
+    static final int steps = 10000;
+    static final double dimension = 70 ;
 
     public static void main(String[] args) throws IOException {
         try (FileWriter f = new FileWriter("deviation.csv", false);
@@ -22,14 +22,15 @@ class Main {
             ParticleSystem initial = ParticleSystem.createRandomPositions(nP,dimension);
 
             initial.putIDs();
+            initial.putRandomCharges();
             //initial.putRandomVelocities(dimension/100);
 
             Simulation s = new Simulation(steps, 1000);
 
             s.setOutput(outputAll);
             var resultAllParticles = s.runSim(initial);
-            s.setOutput(outputSubset);
-            var resultSubParticles = s.runSimWithSubset(initial,nPs);
+            //s.setOutput(outputSubset);
+            //var resultSubParticles = s.runSimWithSubset(initial,nPs);
 
 //            for (int i = 1; i <= nPs; i++) {
 //                var resultSubParticles = s.runSimWithSubset(initial, i);

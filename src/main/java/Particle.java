@@ -3,28 +3,31 @@ class Particle implements Cloneable {
     boolean inuse;
     double mass;
     int id;
-
+    double charge;
     Vector position;
     Vector velocity;
 
     //standard particle
     public Particle(Vector pos, Vector vel) {
         mass = 1;
+        charge = 0;
         inuse = false ;
         this.position = pos;
         this.velocity = vel;
     }
     //particle with specified mass and charge
 
-    public Particle(Vector pos, Vector vel, double m, int id) {
+    public Particle(Vector pos, Vector vel, double m, int id,int charge) {
         mass = m;
         this.id = id;
         this.position = pos;
         this.velocity = vel;
+        this.charge = charge;
     }
     //copy constructor
     public Particle(Particle p) {
         mass = p.mass;
+        charge = p.charge;
         id = p.id;
         this.position = p.position;
         this.velocity = p.velocity;
@@ -35,6 +38,10 @@ class Particle implements Cloneable {
         this.id = id;
 
     }
+    public void putCharge(double charge){
+        this.charge = charge;
+    }
+
     public void setVelocity(Vector vel){
         this.velocity = vel;
     }
@@ -50,6 +57,12 @@ class Particle implements Cloneable {
         var vec = other.position.subtract(this.position);
         var distance = vec.getMagnitude();
         double forceScalar = (this.mass * other.mass) / ((distance * distance)+10);
+        return vec.getUnitVec().scale(forceScalar);
+    }
+    Vector getCouloumbForce(Particle other){
+        var vec = this.position.subtract(other.position);
+        var distance = vec.getMagnitude();
+        double forceScalar=(this.charge * other.charge) / ((distance * distance));
         return vec.getUnitVec().scale(forceScalar);
     }
 
