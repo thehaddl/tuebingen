@@ -76,9 +76,9 @@ class Simulation {
     //needs to be refactored into ParticleSystem class
 
     private List<Particle> randomSubset(List<Particle> particles, int k) {
-        Random random = new Random();
-        Collections.shuffle(particles,random);
-        return particles.subList(0, k);
+        List<Particle> copy = new ArrayList<>(particles);
+        Collections.shuffle(copy);
+        return copy.subList(0, k);
 
     }
 
