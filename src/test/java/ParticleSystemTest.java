@@ -43,7 +43,7 @@ public class ParticleSystemTest {
 
     @Test
     void createRandomParticles_should_return_System_with_random_positions_and_charges(){
-        ParticleSystem p = ParticleSystem.createRandomPositions(17,100);
+        ParticleSystem p = ParticleSystem.createRandomPositionsByRadius(17,100);
         
         assertEquals(17,p.getParticles().size());
         for(Particle a : p.getParticles()){
