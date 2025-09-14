@@ -1,6 +1,9 @@
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
+enum ForceCalculationMethod {
+    NAIVE_IMMUTABLE,NAIVE_MUTABLE, PARALLEL_IMMUTABLE, PARALLEL_MUTABLE
+}
 
 class Simulation {
     private final int steps;
@@ -23,7 +26,12 @@ class Simulation {
     public void setOutput(SimStepOutput output) {
         this.output = output;
     }
-
+    public void setForceCalculationMethod(ForceCalculationMethod method) {
+        this.method = method;
+    }
+    public void setParticleSampler(ParticleSampler ps){
+        this.sampler = ps;
+    }
     //runs simulation with all particles (n*(n-1) terms)
     public ParticleSystem runSim(ParticleSystem initial){
         profiler.startTimer("runSim");
