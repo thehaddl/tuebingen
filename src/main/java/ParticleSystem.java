@@ -27,13 +27,37 @@ public class ParticleSystem {
         return sum.scale(1.0 / particles.size());
     }
 
-    public static ParticleSystem createRandomPositions(int particleCount, double dimension) {
+    public static ParticleSystem createRandomPositionsByDensity(int particleCount, double density) {
+        Random r = new Random();
+
+        // Calculate radius from density
+        double volume = particleCount / density;
+        double radius = Math.cbrt(3.0 * volume / (4.0 * Math.PI));
+
+        System.out.printf("Creating uniform system: %d particles, density %.3f → radius %.3f\n",
+                particleCount, density, radius);
+
+        List<Particle> particles = new ArrayList<>();
+        for (int i = 0; i < particleCount; i++) {
+            Vector vel = new Vector(0, 0, 0);
+            double r_uniform = radius * Math.cbrt(r.nextDouble());
+            double theta = r.nextDouble() * 2 * Math.PI;
+            double phi = Math.acos(2 * r.nextDouble() - 1);
+            Vector pos = Vector.fromPolar(r_uniform, theta, phi);
+            particles.add(new Particle(pos, vel));
+        }
+        return new ParticleSystem(particles);
+    }
+    public static ParticleSystem createRandomPositionsByRadius(int particleCount, double radius) {
         Random r = new Random();
         List<Particle> particles = new ArrayList<>();
         for (int i = 0; i < particleCount; i++) {
             Vector vel = new Vector(0, 0, 0);
-            Vector pos = Vector.fromPolar(r.nextDouble() * dimension, r.nextDouble() * Math.PI *2, r.nextDouble() * Math.PI *2);
-            //Vector pos = new Vector(r.nextDouble() * dimension,r.nextDouble() * dimension,r.nextDouble() * dimension);
+            double r_uniform = radius * Math.cbrt(r.nextDouble());
+            double theta = r.nextDouble() * 2 * Math.PI;
+            double phi = Math.acos(2 * r.nextDouble() - 1);
+
+            Vector pos = Vector.fromPolar(r_uniform, theta, phi);
             particles.add(new Particle(pos, vel));
         }
         return new ParticleSystem(particles);
