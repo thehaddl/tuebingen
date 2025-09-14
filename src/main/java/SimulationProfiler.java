@@ -21,7 +21,7 @@ public class SimulationProfiler {
     }
     public void printReport(){
         System.out.println("======= Performance Analysis ========");
-        timings.entrySet().stream().filter(e -> !e.getKey().endsWith("_start")).forEach(e -> {
+        timings.entrySet().stream().filter(e -> !e.getKey().endsWith("_start")).sorted(Map.Entry.<String, Long>comparingByKey().reversed()).forEach(e -> {
             String op = e.getKey();
             long totalNs = e.getValue();
             double totalMs = totalNs / 1_000_000.0;

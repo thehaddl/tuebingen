@@ -53,14 +53,12 @@ class Simulation {
             profiler.startTimer("writeOutput");
             output.writeStep(s, particles);
             profiler.endTimer("writeOutput");
-            profiler.startTimer("simStepSub");
+            profiler.startTimer("simStepWithSubset");
             runSimStep(particles, randomSubset(particles, subsetSize));
-            profiler.endTimer("simStepSub");
-            profiler.startTimer("particleReset");
+            profiler.endTimer("simStepWithSubset");
             for(Particle p:particles){
                 p.inuse=false;
             }
-            profiler.endTimer("particleReset");
         }
         profiler.endTimer("runSimWithSubset");
         profiler.printReport();
@@ -93,7 +91,7 @@ class Simulation {
             profiler.endTimer("forceCalculationInParallel");
         }
         else{
-            profiler.startTimer("forcCalculationRegular");
+            profiler.startTimer("forceCalculationRegular");
             forces = new ArrayList<>();
             for(Particle current:particles) {
 
@@ -108,7 +106,7 @@ class Simulation {
                 forces.add(force.scale(COUPLINGCONST));
 
             }
-            profiler.endTimer("forcCalculationRegular");
+            profiler.endTimer("forceCalculationRegular");
         }
 
         // step 2: calculate new velocities and positions
@@ -124,10 +122,10 @@ class Simulation {
     //needs to be refactored into ParticleSystem class
 
     private List<Particle> randomSubset(List<Particle> particles, int k) {
-        profiler.startTimer("genRandomSubset");
+        profiler.startTimer("sampleRandomSubset");
         List<Particle> copy = new ArrayList<>(particles);
         Collections.shuffle(copy);
-        profiler.endTimer("genRandomSubset");
+        profiler.endTimer("sampleRandomSubset");
         return copy.subList(0, k);
 
     }
