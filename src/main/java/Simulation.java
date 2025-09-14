@@ -8,18 +8,17 @@ enum ForceCalculationMethod {
 class Simulation {
     private final int steps;
     private final double dt;
-    private boolean paralell = false;
     private SimStepOutput output = SimStepOutput.NOP;
     private SimulationProfiler profiler = new SimulationProfiler();
+    private ForceCalculationMethod method = ForceCalculationMethod.PARALLEL_MUTABLE;
+    private ParticleSampler sampler = new AllParticleSampler();
 
     public Simulation(int steps, double runTime) {
         this.steps = steps;
         dt = runTime/steps;
 
     }
-    public void setParralell(boolean p){
-        this.paralell = p;
-    }
+
     public void resetProfiler(){
         this.profiler.reset();
     }
@@ -42,9 +41,10 @@ class Simulation {
             profiler.startTimer("writeOutput");
             output.writeStep(s, particles);
             profiler.endTimer("writeOutput");
-            profiler.startTimer("simStepAll");
-            runSimStep(particles, particles);
-            profiler.endTimer("simStepAll");
+            List<Particle> sample = sampler.select(particles,profiler);
+            profiler.startTimer("simStep");
+            runSimStep(particles, sample);
+            profiler.endTimer("simStep");
         }
         profiler.endTimer("runSim");
 
@@ -53,70 +53,101 @@ class Simulation {
         return ParticleSystem.createFrom(particles);
     }
 
-    //runs simulation with a given subset (only k * n terms)
-    public ParticleSystem runSimWithSubset(ParticleSystem initial, int subsetSize){
-        profiler.startTimer("runSimWithSubset");
-        List<Particle> particles = initial.getParticles();
-        for (int s = 0; s < steps; s++) {
-            profiler.startTimer("writeOutput");
-            output.writeStep(s, particles);
-            profiler.endTimer("writeOutput");
-            profiler.startTimer("simStepWithSubset");
-            runSimStep(particles, randomSubset(particles, subsetSize));
-            profiler.endTimer("simStepWithSubset");
-            for(Particle p:particles){
-                p.inuse=false;
-            }
-        }
-        profiler.endTimer("runSimWithSubset");
-        profiler.printReport();
-        this.resetProfiler();
-        return ParticleSystem.createFrom(particles);
-
-    }
-    // calculates a general Simulation Step (if k = n then subset is just all particles, however results differ because of numeric error)
-
-    private void runSimStep(List<Particle> particles, List<Particle> subset) {
-
-        double COUPLINGCONST = 1.0/subset.size();
+    List<Vector> calculateForcesNaiveImmutable(List<Particle> particles, List<Particle> subset){
         List<Vector> forces;
-        if(paralell) {
-            profiler.startTimer("forceCalculationInParallel");
-             forces = particles.parallelStream()
-                    .map(current -> {
-                        var force = new Vector(0, 0, 0);
-                        for (Particle other : subset) {
-                            if (current != other) {
-                                force = force.add(current.getCouloumbForce(other));
-                            } else {
-                                current.inuse = true;
-                            }
-                        }
-                        force.scale(COUPLINGCONST);
-                        return force;  // Note: removed the scale call above, doing it here
-                    })
-                    .collect(Collectors.toList());
-            profiler.endTimer("forceCalculationInParallel");
-        }
-        else{
-            profiler.startTimer("forceCalculationRegular");
-            forces = new ArrayList<>();
-            for(Particle current:particles) {
+        double COUPLINGCONST = 1.0/subset.size();
+        profiler.startTimer("forceCalculationNaiveImmutable");
+        forces = new ArrayList<>();
+        for(Particle current:particles) {
 
-                var force = new Vector(0, 0, 0);
-                for (Particle other : subset) {
-                    if (current != other) {
-                        force = force.add(current.getCouloumbForce(other));
-                    } else {
-                        current.inuse = true;
-                    }
+            var force = new Vector(0, 0, 0);
+            for (Particle other : subset) {
+                if (current != other) {
+                    force = force.add(current.getCouloumbForce(other));
+                } else {
+                    current.inuse = true;
                 }
-                forces.add(force.scale(COUPLINGCONST));
-
             }
-            profiler.endTimer("forceCalculationRegular");
-        }
+            forces.add(force.scale(COUPLINGCONST));
 
+        }
+        profiler.endTimer("forceCalculationNaiveImmutable");
+        return forces;
+    }
+    List<Vector> calculateForcesNaiveMutable(List<Particle> particles, List<Particle> subset){
+        List<Vector> forces;
+        double COUPLINGCONST = 1.0/subset.size();
+        profiler.startTimer("forceCalculationNaiveMutable");
+        forces = new ArrayList<>();
+        for(Particle current:particles) {
+
+            var force = new Vector(0, 0, 0);
+            for (Particle other : subset) {
+                if (current != other) {
+                    force = force.addInPlace(current.getCouloumbForce(other));
+                } else {
+                    current.inuse = true;
+                }
+            }
+            forces.add(force.scale(COUPLINGCONST));
+
+        }
+        profiler.endTimer("forceCalculationNaiveMutable");
+        return forces;
+    }
+    List<Vector> calculateForcesParallelImmutable(List<Particle> particles, List<Particle> subset){
+        List<Vector> forces;
+        double COUPLINGCONST = 1.0/subset.size();
+        profiler.startTimer("forceCalculationParallelImmutable");
+        forces = particles.parallelStream()
+                .map(current -> {
+                    var force = new Vector(0, 0, 0);
+                    for (Particle other : subset) {
+                        if (current != other) {
+                            force = force.add(current.getCouloumbForce(other));
+                        } else {
+                            current.inuse = true;
+                        }
+                    }
+                    force.scale(COUPLINGCONST);
+                    return force;  // Note: removed the scale call above, doing it here
+                })
+                .collect(Collectors.toList());
+        profiler.endTimer("forceCalculationParallelImmutable");
+        return forces;
+    }
+    List<Vector> calculateForcesParallelMutable(List<Particle> particles, List<Particle> subset){
+        List<Vector> forces;
+        double COUPLINGCONST = 1.0/subset.size();
+        profiler.startTimer("forceCalculationInParallelMutable");
+        forces = particles.parallelStream()
+                .map(current -> {
+                    var force = new Vector(0, 0, 0);
+                    for (Particle other : subset) {
+                        if (current != other) {
+                            force = force.addInPlace(current.getCouloumbForce(other));
+                        } else {
+                            current.inuse = true;
+                        }
+                    }
+                    force.scale(COUPLINGCONST);
+                    return force;  // Note: removed the scale call above, doing it here
+                })
+                .collect(Collectors.toList());
+        profiler.endTimer("forceCalculationInParallelMutable");
+        return forces;
+    }
+    List<Vector> calculateForces(List<Particle> particles, List<Particle> sample) {
+        return switch (method) {
+            case NAIVE_IMMUTABLE -> calculateForcesNaiveImmutable(particles,sample);
+            case NAIVE_MUTABLE -> calculateForcesNaiveMutable(particles,sample);
+            case PARALLEL_IMMUTABLE -> calculateForcesParallelImmutable(particles, sample);
+            case PARALLEL_MUTABLE -> calculateForcesParallelMutable(particles, sample);
+        };
+    }
+
+    private void runSimStep(List<Particle> particles, List<Particle> sample) {
+        List<Vector> forces = calculateForces(particles,sample);
         // step 2: calculate new velocities and positions
         profiler.startTimer("calculatePositionsAndVelocities");
         for (int i = 0; i < particles.size(); i++) {
@@ -126,16 +157,6 @@ class Simulation {
             p.position = p.position.add(p.velocity.scale(dt));
         }
         profiler.endTimer("calculatePositionsAndVelocities");
-    }
-    //needs to be refactored into ParticleSystem class
-
-    private List<Particle> randomSubset(List<Particle> particles, int k) {
-        profiler.startTimer("sampleRandomSubset");
-        List<Particle> copy = new ArrayList<>(particles);
-        Collections.shuffle(copy);
-        profiler.endTimer("sampleRandomSubset");
-        return copy.subList(0, k);
-
     }
 
 }
