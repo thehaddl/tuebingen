@@ -89,6 +89,31 @@ public class ParticleSystemTest {
         assertEquals(0.0, result.getSystemSpreadError(), 1e-10);
     }
     @Test
+    void calculatePositionError_should_return_positional_error(){
+        //execute
+        var actual =s1.calculatePositionError(s2);
+        //verify
+        double avDis = new Vector(1,1,0).getMagnitude(); //times 3 divided by
+        double rmse = Math.sqrt(avDis*avDis);
+        double maxError = avDis;
+        double[] expected = {avDis,rmse,maxError};
+
+        assertArrayEquals(expected,actual,1e-10);
+    }
+    @Test
+    void calculateVelocityError_should_return_positional_error(){
+        //execute
+        var actual =s1.calculateVelocityError(s2);
+        //verify
+        double avDis = new Vector(1,0,0).getMagnitude(); //times 3 divided by
+        double rmse = Math.sqrt(avDis*avDis);
+        double maxError = avDis;
+        double[] expected = {avDis,rmse,maxError};
+
+        assertArrayEquals(expected,actual,1e-10);
+    }
+
+    @Test
     void createRandomParticlesByRadius_should_return_System_with_random_positions_and_charges(){
         ParticleSystem p = ParticleSystem.createRandomPositionsByRadius(17,100);
         
