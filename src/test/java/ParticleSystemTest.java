@@ -101,7 +101,7 @@ public class ParticleSystemTest {
         assertArrayEquals(expected,actual,1e-10);
     }
     @Test
-    void calculateVelocityError_should_return_positional_error(){
+    void calculateVelocityError_should_return_velocity_error(){
         //execute
         var actual =s1.calculateVelocityError(s2);
         //verify
