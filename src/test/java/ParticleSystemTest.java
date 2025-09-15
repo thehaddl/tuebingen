@@ -30,9 +30,9 @@ public class ParticleSystemTest {
         identicalParticles.add(new Particle(new Vector(0, 1, 0), new Vector(0, 1, 0), 2.0, 1));
 
 
-        s1 = new ParticleSystem(p1);
-        s2 = new ParticleSystem(p2);
-        identicalSystem = new ParticleSystem(identicalParticles);
+        s1 =  ParticleSystem.createFrom(p1);
+        s2 =  ParticleSystem.createFrom(p2);
+        identicalSystem =  ParticleSystem.createFrom(identicalParticles);
     }
     @Test
     void centerOfGravity_should_return_center_of_gravity () {
