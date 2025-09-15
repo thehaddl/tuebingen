@@ -89,7 +89,7 @@ public class ParticleSystemTest {
         assertEquals(0.0, result.getSystemSpreadError(), 1e-10);
     }
     @Test
-    void createRandomParticles_should_return_System_with_random_positions_and_charges(){
+    void createRandomParticlesByRadius_should_return_System_with_random_positions_and_charges(){
         ParticleSystem p = ParticleSystem.createRandomPositionsByRadius(17,100);
         
         assertEquals(17,p.getParticles().size());
