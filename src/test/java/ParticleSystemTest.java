@@ -70,7 +70,7 @@ public class ParticleSystemTest {
     }
     @Test
     void compare_should_return_zero_deviation_for_identical_systems() {
-        SimulationComparer result = s2.compare(identicalSystem);
+        SimulationComparer result = s1.compare(identicalSystem);
 
         assertEquals(0.0, result.getMeanPositionError(), 1e-10);
         assertEquals(0.0, result.getRmsePositionError(), 1e-10);
