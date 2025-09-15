@@ -98,13 +98,10 @@ public class ParticleSystem {
         if (this.particles.size() != reference.particles.size()) {
             throw new IllegalArgumentException("Cannot compare systems with different particle counts");
         }
-        // Position errors
         double[] posErrors = calculatePositionError(reference);
 
-        // Velocity errors
         double[] velErrors = calculateVelocityError(reference);
 
-        // Energy errors
         double[] energyErrors = calculateEnergyErrors(reference);
 
         // Structural errors
