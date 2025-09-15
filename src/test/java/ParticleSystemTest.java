@@ -79,11 +79,6 @@ public class ParticleSystemTest {
         assertEquals(0.0, result.getMeanVelocityError(), 1e-10);
         assertEquals(0.0, result.getRmseVelocityError(), 1e-10);
         assertEquals(0.0, result.getMaxVelocityError(), 1e-10);
-
-        assertEquals(0.0, result.getKineticEnergyError(), 1e-10);
-        assertEquals(0.0, result.getPotentialEnergyError(), 1e-10);
-        assertEquals(0.0, result.getTotalEnergyError(), 1e-10);
-
         assertEquals(0.0, result.getCenterOfMassDrift(), 1e-10);
         assertEquals(0.0, result.getMeanPairDistanceError(), 1e-10);
         assertEquals(0.0, result.getSystemSpreadError(), 1e-10);

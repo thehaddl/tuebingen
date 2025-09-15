@@ -102,7 +102,6 @@ public class ParticleSystem {
 
         double[] velErrors = calculateVelocityError(reference);
 
-        double[] energyErrors = calculateEnergyErrors(reference);
 
         // Structural errors
         double comDrift = calculateCenterOfMassDrift(reference);
@@ -112,7 +111,6 @@ public class ParticleSystem {
         return new SimulationComparer(
                 posErrors[0], posErrors[1], posErrors[2],
                 velErrors[0], velErrors[1], velErrors[2],
-                energyErrors[0], energyErrors[1], energyErrors[2],
                 comDrift, pairDistError, spreadError
         );
     }
@@ -144,21 +142,7 @@ public class ParticleSystem {
         double rmse = Math.sqrt(sumSquaredError / particles.size());
         return new double[]{mean, rmse, maxError};
     }
-     double[] calculateEnergyErrors(ParticleSystem reference) {
-        double thisKinetic = calculateKineticEnergy();
-        double refKinetic = reference.calculateKineticEnergy();
-        double kineticError = Math.abs(thisKinetic - refKinetic) / Math.abs(refKinetic);
 
-        double thisPotential = calculatePotentialEnergy();
-        double refPotential = reference.calculatePotentialEnergy();
-        double potentialError = Math.abs(thisPotential - refPotential) / Math.abs(refPotential);
-
-        double thisTotal = thisKinetic + thisPotential;
-        double refTotal = refKinetic + refPotential;
-        double totalError = Math.abs(thisTotal - refTotal) / Math.abs(refTotal);
-
-        return new double[]{kineticError, potentialError, totalError};
-    }
      double calculateSystemSpreadError(ParticleSystem reference) {
         double thisSpread = calculateSystemSpread();
         double refSpread = reference.calculateSystemSpread();
@@ -195,20 +179,7 @@ public class ParticleSystem {
         }
         return Math.sqrt(sumSquaredDistance / particles.size());
     }
-     double calculatePotentialEnergy() {
-        double totalPE = 0.0;
-        for (int i = 0; i < particles.size(); i++) {
-            for (int j = i + 1; j < particles.size(); j++) {
-                Particle pi = particles.get(i);
-                Particle pj = particles.get(j);
-                double r = pi.position.subtract(pj.position).getMagnitude();
-                if (r > 0) { // Avoid division by zero
-                    totalPE += pi.charge * pj.charge / r; // Coulomb potential
-                }
-            }
-        }
-        return totalPE;
-    }
+
      double calculateKineticEnergy() {
         double totalKE = 0.0;
         for (Particle p : particles) {
