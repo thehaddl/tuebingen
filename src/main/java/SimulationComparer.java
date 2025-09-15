@@ -1,5 +1,9 @@
 public class SimulationComparer {
+
+
+
     public final double meanPositionError;
+
     public final double rmsePositionError;
     public final double maxPositionError;
 
@@ -59,6 +63,44 @@ public class SimulationComparer {
                 centerOfMassDrift, meanPairDistanceError, systemSpreadError,
                 getOverallError());
     }
+    public double getMeanPositionError() {
+        return meanPositionError;
+    }
+    public double getMeanVelocityError() {
+        return meanVelocityError;
+    }
+    public double getMaxPositionError() {
+        return maxPositionError;
+    }
+    public double getRmsePositionError() {
+        return rmsePositionError;
+    }
+    public double getRmseVelocityError() {
+        return rmseVelocityError;
+    }
+    public double getMaxVelocityError() {
+        return  maxVelocityError;
+    }
+    public double getKineticEnergyError(){
+        return kineticEnergyError;
+    }
+    public double getPotentialEnergyError(){
+        return potentialEnergyError;
+    }
 
+    public double getMeanPairDistanceError() {
+        return meanPairDistanceError;
+    }
+    public double getSystemSpreadError(){
+        return systemSpreadError;
+    }
+
+    public double getTotalEnergyError() {
+        return totalEnergyError;
+    }
+
+    public double getCenterOfMassDrift(){
+        return centerOfMassDrift;
+    }
 }
 
