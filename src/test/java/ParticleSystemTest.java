@@ -107,6 +107,14 @@ public class ParticleSystemTest {
 
         assertArrayEquals(expected,actual,1e-10);
     }
+    @Test
+    void calculateKineticEnergy_should_return_kinetic_energy(){
+        //execute
+        var actual =s1.calculateKineticEnergy();
+        //verify
+        double kE = 2;
+        assertEquals(kE,actual,1e-10);
+    }
 
     @Test
     void createRandomParticlesByRadius_should_return_System_with_random_positions_and_charges(){
