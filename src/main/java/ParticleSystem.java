@@ -110,9 +110,9 @@ public class ParticleSystem {
         double spreadError = calculateSystemSpreadError(reference);
 
         return new SimulationComparer(
-                posErrors[0], posErrors[1], posErrors[2],  // mean, rmse, max position
-                velErrors[0], velErrors[1], velErrors[2],  // mean, rmse, max velocity
-                energyErrors[0], energyErrors[1], energyErrors[2], // kinetic, potential, total
+                posErrors[0], posErrors[1], posErrors[2],
+                velErrors[0], velErrors[1], velErrors[2],
+                energyErrors[0], energyErrors[1], energyErrors[2],
                 comDrift, pairDistError, spreadError
         );
     }
