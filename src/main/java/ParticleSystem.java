@@ -116,7 +116,7 @@ public class ParticleSystem {
                 comDrift, pairDistError, spreadError
         );
     }
-    private double[] calculatePositionError(ParticleSystem reference){
+    double[] calculatePositionError(ParticleSystem reference){
         double sumError= 0.0;
         double sumSquaredError = 0.0;
         double maxError = 0.0;
@@ -130,7 +130,7 @@ public class ParticleSystem {
         double rmse = Math.sqrt(sumSquaredError / particles.size());
         return new double[]{mean, rmse, maxError};
     }
-    private double[] calculateVelocityError(ParticleSystem reference){
+     double[] calculateVelocityError(ParticleSystem reference){
         double sumError= 0.0;
         double sumSquaredError = 0.0;
         double maxError = 0.0;
@@ -144,7 +144,7 @@ public class ParticleSystem {
         double rmse = Math.sqrt(sumSquaredError / particles.size());
         return new double[]{mean, rmse, maxError};
     }
-    private double[] calculateEnergyErrors(ParticleSystem reference) {
+     double[] calculateEnergyErrors(ParticleSystem reference) {
         double thisKinetic = calculateKineticEnergy();
         double refKinetic = reference.calculateKineticEnergy();
         double kineticError = Math.abs(thisKinetic - refKinetic) / Math.abs(refKinetic);
@@ -159,17 +159,17 @@ public class ParticleSystem {
 
         return new double[]{kineticError, potentialError, totalError};
     }
-    private double calculateSystemSpreadError(ParticleSystem reference) {
+     double calculateSystemSpreadError(ParticleSystem reference) {
         double thisSpread = calculateSystemSpread();
         double refSpread = reference.calculateSystemSpread();
         return Math.abs(thisSpread - refSpread) / refSpread;
     }
-    private double calculateCenterOfMassDrift(ParticleSystem reference) {
+     double calculateCenterOfMassDrift(ParticleSystem reference) {
         Vector thisCOM = this.centerOfGravity();
         Vector refCOM = reference.centerOfGravity();
         return thisCOM.subtract(refCOM).getMagnitude();
     }
-    private double calculateMeanPairDistanceError(ParticleSystem reference) {
+     double calculateMeanPairDistanceError(ParticleSystem reference) {
         double sumError = 0.0;
         int pairCount = 0;
 
@@ -186,7 +186,7 @@ public class ParticleSystem {
 
         return sumError / pairCount;
     }
-    private double calculateSystemSpread() {
+     double calculateSystemSpread() {
         Vector com = centerOfMass();
         double sumSquaredDistance = 0.0;
         for (Particle p : particles) {
@@ -195,7 +195,7 @@ public class ParticleSystem {
         }
         return Math.sqrt(sumSquaredDistance / particles.size());
     }
-    private double calculatePotentialEnergy() {
+     double calculatePotentialEnergy() {
         double totalPE = 0.0;
         for (int i = 0; i < particles.size(); i++) {
             for (int j = i + 1; j < particles.size(); j++) {
@@ -209,7 +209,7 @@ public class ParticleSystem {
         }
         return totalPE;
     }
-    private double calculateKineticEnergy() {
+     double calculateKineticEnergy() {
         double totalKE = 0.0;
         for (Particle p : particles) {
             double v2 = p.velocity.getMagnitude();
