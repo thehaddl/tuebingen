@@ -20,7 +20,7 @@ public class ParticleSystemTest {
         p1.add(new Particle(new Vector(0, 1, 0), new Vector(0, 1, 0), 2.0, 1));
 
         List<Particle> p2 = new ArrayList<>();
-        p2.add(new Particle(new Vector(0.1, 0.05, 0), new Vector(1.02, 0, 0), 1.0, 1));
+        p2.add(new Particle(new Vector(1, 1, 0), new Vector(2, 0, 0), 1.0, 1));
         p2.add(new Particle(new Vector(2, 1, 0), new Vector(-2, 0, 0), 1.0, -1));
         p2.add(new Particle(new Vector(1, 2, 0), new Vector(0, 2, 0), 2.0, 1));
 
