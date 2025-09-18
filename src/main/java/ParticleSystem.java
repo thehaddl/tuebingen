@@ -53,12 +53,6 @@ public class ParticleSystem {
 
         Random r = new Random();
 
-        // Calculate radius from density
-        double volume = particleCount / density;
-        double radius = Math.cbrt(3.0 * volume / (4.0 * Math.PI));
-
-        System.out.printf("Creating uniform system: %d particles, density %.3f → radius %.3f\n",
-                particleCount, density, radius);
 
         List<Particle> particles = new ArrayList<>();
         for (int i = 0; i < particleCount; i++) {
