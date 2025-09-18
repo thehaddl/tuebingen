@@ -84,9 +84,9 @@ public class ParticleSystemTest {
         assertEquals(0.0, result.getSystemSpreadError(), 1e-10);
     }
     @Test
-    void calculatePositionError_should_return_positional_error(){
+    void calculatePositionDiff_should_return_positional_diff(){
         //execute
-        var actual =s1.calculatePositionError(s2);
+        var actual =s1.calculatePositionDiff(s2);
         //verify
         double avDis = new Vector(1,1,0).getMagnitude(); //times 3 divided by
         double rmse = Math.sqrt(avDis*avDis);
@@ -96,9 +96,9 @@ public class ParticleSystemTest {
         assertArrayEquals(expected,actual,1e-10);
     }
     @Test
-    void calculateVelocityError_should_return_velocity_error(){
+    void calculateVelocityDiff_should_return_velocity_error(){
         //execute
-        var actual =s1.calculateVelocityError(s2);
+        var actual =s1.calculateVelocityDiff(s2);
         //verify
         double avDis = new Vector(1,0,0).getMagnitude(); //times 3 divided by
         double rmse = Math.sqrt(avDis*avDis);
@@ -119,7 +119,7 @@ public class ParticleSystemTest {
     @Test
     void createRandomParticlesByRadius_should_return_System_with_random_positions_and_charges(){
         ParticleSystem p = ParticleSystem.createRandomPositionsByRadius(17,100);
-        
+
         assertEquals(17,p.getParticles().size());
         for(Particle a : p.getParticles()){
             for(var b : a.position.components){
@@ -127,6 +127,26 @@ public class ParticleSystemTest {
             }
 
         }
+    }
+    @Test
+    void calculateSystemSpread_should_return_system_spread(){
+         double actual = s1.calculateSystemSpread();
+         Vector com = new Vector(0.25,0.5,0);
+         double delta1= new Vector(0,0,0).subtract(com).getMagnitude();
+        double delta2= new Vector(1,0,0).subtract(com).getMagnitude();
+        double delta3= new Vector(0,1,0).subtract(com).getMagnitude();
+        double sqd1 = delta1*delta1;
+        double sqd2 = delta2*delta2;
+        double sqd3 = delta3*delta3;
+        double sumsq= sqd1+sqd2+sqd3;
+        double expected = Math.sqrt(sumsq/3);
+        assertEquals(expected,actual);
+    }
+    @Test
+    void centerOfMass_should_return_center_of_mass(){
+        var actual = s1.centerOfMass();
+        Vector expected = new Vector(0.25,0.5,0);
+        assertArrayEquals(expected.components,actual.components);
     }
 
 
