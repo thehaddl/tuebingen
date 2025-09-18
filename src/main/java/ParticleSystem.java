@@ -98,15 +98,15 @@ public class ParticleSystem {
         if (this.particles.size() != reference.particles.size()) {
             throw new IllegalArgumentException("Cannot compare systems with different particle counts");
         }
-        double[] posErrors = calculatePositionError(reference);
+        double[] posErrors = calculatePositionDiff(reference);
 
-        double[] velErrors = calculateVelocityError(reference);
+        double[] velErrors = calculateVelocityDiff(reference);
 
 
         // Structural errors
         double comDrift = calculateCenterOfMassDrift(reference);
         double pairDistError = calculateMeanPairDistanceError(reference);
-        double spreadError = calculateSystemSpreadError(reference);
+        double spreadError = calculateSystemSpreadDiff(reference);
 
         return new SimulationComparer(
                 posErrors[0], posErrors[1], posErrors[2],
@@ -114,7 +114,7 @@ public class ParticleSystem {
                 comDrift, pairDistError, spreadError
         );
     }
-    double[] calculatePositionError(ParticleSystem reference){
+    double[] calculatePositionDiff(ParticleSystem reference){
         double sumError= 0.0;
         double sumSquaredError = 0.0;
         double maxError = 0.0;
@@ -128,7 +128,7 @@ public class ParticleSystem {
         double rmse = Math.sqrt(sumSquaredError / particles.size());
         return new double[]{mean, rmse, maxError};
     }
-     double[] calculateVelocityError(ParticleSystem reference){
+     double[] calculateVelocityDiff(ParticleSystem reference){
         double sumError= 0.0;
         double sumSquaredError = 0.0;
         double maxError = 0.0;
@@ -143,7 +143,7 @@ public class ParticleSystem {
         return new double[]{mean, rmse, maxError};
     }
 
-     double calculateSystemSpreadError(ParticleSystem reference) {
+     double calculateSystemSpreadDiff(ParticleSystem reference) {
         double thisSpread = calculateSystemSpread();
         double refSpread = reference.calculateSystemSpread();
         return Math.abs(thisSpread - refSpread) / refSpread;
