@@ -1,4 +1,5 @@
 public class SimulationComparer {
+
     public final double meanPositionError;
     public final double rmsePositionError;
     public final double maxPositionError;
@@ -7,9 +8,7 @@ public class SimulationComparer {
     public final double rmseVelocityError;
     public final double maxVelocityError;
 
-    public final double kineticEnergyError;
-    public final double potentialEnergyError;
-    public final double totalEnergyError;
+
 
     public final double centerOfMassDrift;
     public final double meanPairDistanceError;
@@ -17,7 +16,6 @@ public class SimulationComparer {
 
     public SimulationComparer(double meanPosErr, double rmsePosErr, double maxPosErr,
                                 double meanVelErr, double rmseVelErr, double maxVelErr,
-                                double kineticErr, double potentialErr, double totalErr,
                                 double comDrift, double pairDistErr, double spreadErr) {
         this.meanPositionError = meanPosErr;
         this.rmsePositionError = rmsePosErr;
@@ -25,17 +23,15 @@ public class SimulationComparer {
         this.meanVelocityError = meanVelErr;
         this.rmseVelocityError = rmseVelErr;
         this.maxVelocityError = maxVelErr;
-        this.kineticEnergyError = kineticErr;
-        this.potentialEnergyError = potentialErr;
-        this.totalEnergyError = totalErr;
+
         this.centerOfMassDrift = comDrift;
         this.meanPairDistanceError = pairDistErr;
         this.systemSpreadError = spreadErr;
     }
     public double getOverallError() {
-        return Math.max(Math.max(rmsePositionError, rmseVelocityError),
-                Math.abs(totalEnergyError));
-    }
+
+        return Math.max(rmsePositionError, rmseVelocityError);}
+
 
     @Override
     public String toString() {
@@ -45,8 +41,7 @@ public class SimulationComparer {
               Mean: %.6f, RMSE: %.6f, Max: %.6f
             Velocity Errors:
               Mean: %.6f, RMSE: %.6f, Max: %.6f
-            Energy Conservation:
-              Kinetic: %.6f, Potential: %.6f, Total: %.6f
+
             Structural Errors:
               Center of Mass Drift: %.6f
               Mean Pair Distance Error: %.6f
@@ -55,9 +50,39 @@ public class SimulationComparer {
             """,
                 meanPositionError, rmsePositionError, maxPositionError,
                 meanVelocityError, rmseVelocityError, maxVelocityError,
-                kineticEnergyError, potentialEnergyError, totalEnergyError,
+
                 centerOfMassDrift, meanPairDistanceError, systemSpreadError,
                 getOverallError());
+    }
+    public double getMeanPositionError() {
+        return meanPositionError;
+    }
+    public double getMeanVelocityError() {
+        return meanVelocityError;
+    }
+    public double getMaxPositionError() {
+        return maxPositionError;
+    }
+    public double getRmsePositionError() {
+        return rmsePositionError;
+    }
+    public double getRmseVelocityError() {
+        return rmseVelocityError;
+    }
+    public double getMaxVelocityError() {
+        return  maxVelocityError;
+    }
+
+
+    public double getMeanPairDistanceError() {
+        return meanPairDistanceError;
+    }
+    public double getSystemSpreadError(){
+        return systemSpreadError;
+    }
+
+    public double getCenterOfMassDrift(){
+        return centerOfMassDrift;
     }
 
 }

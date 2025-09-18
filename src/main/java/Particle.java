@@ -24,6 +24,12 @@ class Particle implements Cloneable {
         this.velocity = vel;
         this.charge = charge;
     }
+    public Particle(Vector pos, Vector vel, double m,int charge) {
+        mass = m;
+        this.position = pos;
+        this.velocity = vel;
+        this.charge = charge;
+    }
     //copy constructor
     public Particle(Particle p) {
         mass = p.mass;

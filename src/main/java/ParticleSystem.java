@@ -28,6 +28,7 @@ public class ParticleSystem {
     }
 
     public static ParticleSystem createRandomPositionsByDensity(int particleCount, double density) {
+
         Random r = new Random();
 
         // Calculate radius from density
@@ -49,7 +50,10 @@ public class ParticleSystem {
         return new ParticleSystem(particles);
     }
     public static ParticleSystem createRandomPositionsByRadius(int particleCount, double radius) {
+
         Random r = new Random();
+
+
         List<Particle> particles = new ArrayList<>();
         for (int i = 0; i < particleCount; i++) {
             Vector vel = new Vector(0, 0, 0);
@@ -62,6 +66,7 @@ public class ParticleSystem {
         }
         return new ParticleSystem(particles);
     }
+
 
 
     //future purpose
@@ -98,28 +103,27 @@ public class ParticleSystem {
         if (this.particles.size() != reference.particles.size()) {
             throw new IllegalArgumentException("Cannot compare systems with different particle counts");
         }
-        // Position errors
-        double[] posErrors = calculatePositionError(reference);
 
-        // Velocity errors
-        double[] velErrors = calculateVelocityError(reference);
+        double[] posErrors = calculatePositionDiff(reference);
 
-        // Energy errors
-        double[] energyErrors = calculateEnergyErrors(reference);
+        double[] velErrors = calculateVelocityDiff(reference);
+
+
 
         // Structural errors
         double comDrift = calculateCenterOfMassDrift(reference);
         double pairDistError = calculateMeanPairDistanceError(reference);
-        double spreadError = calculateSystemSpreadError(reference);
+
+        double spreadError = calculateSystemSpreadDiff(reference);
 
         return new SimulationComparer(
-                posErrors[0], posErrors[1], posErrors[2],  // mean, rmse, max position
-                velErrors[0], velErrors[1], velErrors[2],  // mean, rmse, max velocity
-                energyErrors[0], energyErrors[1], energyErrors[2], // kinetic, potential, total
+                posErrors[0], posErrors[1], posErrors[2],
+                velErrors[0], velErrors[1], velErrors[2],
                 comDrift, pairDistError, spreadError
         );
     }
-    private double[] calculatePositionError(ParticleSystem reference){
+    double[] calculatePositionDiff(ParticleSystem reference){
+
         double sumError= 0.0;
         double sumSquaredError = 0.0;
         double maxError = 0.0;
@@ -133,7 +137,9 @@ public class ParticleSystem {
         double rmse = Math.sqrt(sumSquaredError / particles.size());
         return new double[]{mean, rmse, maxError};
     }
-    private double[] calculateVelocityError(ParticleSystem reference){
+
+     double[] calculateVelocityDiff(ParticleSystem reference){
+
         double sumError= 0.0;
         double sumSquaredError = 0.0;
         double maxError = 0.0;
@@ -147,32 +153,19 @@ public class ParticleSystem {
         double rmse = Math.sqrt(sumSquaredError / particles.size());
         return new double[]{mean, rmse, maxError};
     }
-    private double[] calculateEnergyErrors(ParticleSystem reference) {
-        double thisKinetic = calculateKineticEnergy();
-        double refKinetic = reference.calculateKineticEnergy();
-        double kineticError = Math.abs(thisKinetic - refKinetic) / Math.abs(refKinetic);
 
-        double thisPotential = calculatePotentialEnergy();
-        double refPotential = reference.calculatePotentialEnergy();
-        double potentialError = Math.abs(thisPotential - refPotential) / Math.abs(refPotential);
 
-        double thisTotal = thisKinetic + thisPotential;
-        double refTotal = refKinetic + refPotential;
-        double totalError = Math.abs(thisTotal - refTotal) / Math.abs(refTotal);
-
-        return new double[]{kineticError, potentialError, totalError};
-    }
-    private double calculateSystemSpreadError(ParticleSystem reference) {
+     double calculateSystemSpreadDiff(ParticleSystem reference) {
         double thisSpread = calculateSystemSpread();
         double refSpread = reference.calculateSystemSpread();
         return Math.abs(thisSpread - refSpread) / refSpread;
     }
-    private double calculateCenterOfMassDrift(ParticleSystem reference) {
+     double calculateCenterOfMassDrift(ParticleSystem reference) {
         Vector thisCOM = this.centerOfGravity();
         Vector refCOM = reference.centerOfGravity();
         return thisCOM.subtract(refCOM).getMagnitude();
     }
-    private double calculateMeanPairDistanceError(ParticleSystem reference) {
+     double calculateMeanPairDistanceError(ParticleSystem reference) {
         double sumError = 0.0;
         int pairCount = 0;
 
@@ -189,7 +182,7 @@ public class ParticleSystem {
 
         return sumError / pairCount;
     }
-    private double calculateSystemSpread() {
+     double calculateSystemSpread() {
         Vector com = centerOfMass();
         double sumSquaredDistance = 0.0;
         for (Particle p : particles) {
@@ -198,21 +191,8 @@ public class ParticleSystem {
         }
         return Math.sqrt(sumSquaredDistance / particles.size());
     }
-    private double calculatePotentialEnergy() {
-        double totalPE = 0.0;
-        for (int i = 0; i < particles.size(); i++) {
-            for (int j = i + 1; j < particles.size(); j++) {
-                Particle pi = particles.get(i);
-                Particle pj = particles.get(j);
-                double r = pi.position.subtract(pj.position).getMagnitude();
-                if (r > 0) { // Avoid division by zero
-                    totalPE += pi.charge * pj.charge / r; // Coulomb potential
-                }
-            }
-        }
-        return totalPE;
-    }
-    private double calculateKineticEnergy() {
+
+     double calculateKineticEnergy() {
         double totalKE = 0.0;
         for (Particle p : particles) {
             double v2 = p.velocity.getMagnitude();
@@ -221,6 +201,7 @@ public class ParticleSystem {
         }
         return totalKE;
     }
+
     public Vector centerOfMass() {
         var massWeightedSum = new Vector(0, 0, 0);
         double totalMass = 0.0;
