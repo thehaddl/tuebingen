@@ -28,6 +28,7 @@ public class ParticleSystem {
     }
 
     public static ParticleSystem createRandomPositionsByDensity(int particleCount, double density) {
+
         Random r = new Random();
 
         // Calculate radius from density
@@ -49,7 +50,10 @@ public class ParticleSystem {
         return new ParticleSystem(particles);
     }
     public static ParticleSystem createRandomPositionsByRadius(int particleCount, double radius) {
+
         Random r = new Random();
+
+
         List<Particle> particles = new ArrayList<>();
         for (int i = 0; i < particleCount; i++) {
             Vector vel = new Vector(0, 0, 0);
@@ -62,6 +66,7 @@ public class ParticleSystem {
         }
         return new ParticleSystem(particles);
     }
+
 
 
     //future purpose
@@ -98,14 +103,17 @@ public class ParticleSystem {
         if (this.particles.size() != reference.particles.size()) {
             throw new IllegalArgumentException("Cannot compare systems with different particle counts");
         }
+
         double[] posErrors = calculatePositionDiff(reference);
 
         double[] velErrors = calculateVelocityDiff(reference);
 
 
+
         // Structural errors
         double comDrift = calculateCenterOfMassDrift(reference);
         double pairDistError = calculateMeanPairDistanceError(reference);
+
         double spreadError = calculateSystemSpreadDiff(reference);
 
         return new SimulationComparer(
@@ -115,6 +123,7 @@ public class ParticleSystem {
         );
     }
     double[] calculatePositionDiff(ParticleSystem reference){
+
         double sumError= 0.0;
         double sumSquaredError = 0.0;
         double maxError = 0.0;
@@ -128,7 +137,9 @@ public class ParticleSystem {
         double rmse = Math.sqrt(sumSquaredError / particles.size());
         return new double[]{mean, rmse, maxError};
     }
+
      double[] calculateVelocityDiff(ParticleSystem reference){
+
         double sumError= 0.0;
         double sumSquaredError = 0.0;
         double maxError = 0.0;
@@ -142,6 +153,7 @@ public class ParticleSystem {
         double rmse = Math.sqrt(sumSquaredError / particles.size());
         return new double[]{mean, rmse, maxError};
     }
+
 
      double calculateSystemSpreadDiff(ParticleSystem reference) {
         double thisSpread = calculateSystemSpread();
@@ -189,6 +201,7 @@ public class ParticleSystem {
         }
         return totalKE;
     }
+
     public Vector centerOfMass() {
         var massWeightedSum = new Vector(0, 0, 0);
         double totalMass = 0.0;

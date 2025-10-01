@@ -117,8 +117,10 @@ public class ParticleSystemTest {
     }
 
     @Test
+
     void createRandomParticlesByRadius_should_return_System_with_random_positions_and_charges(){
         ParticleSystem p = ParticleSystem.createRandomPositionsByRadius(17,100);
+
 
         assertEquals(17,p.getParticles().size());
         for(Particle a : p.getParticles()){
@@ -128,6 +130,7 @@ public class ParticleSystemTest {
 
         }
     }
+
     @Test
     void calculateSystemSpread_should_return_system_spread(){
          double actual = s1.calculateSystemSpread();
@@ -148,6 +151,7 @@ public class ParticleSystemTest {
         Vector expected = new Vector(0.25,0.5,0);
         assertArrayEquals(expected.components,actual.components);
     }
+
 
 
 }
