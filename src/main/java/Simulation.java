@@ -48,7 +48,6 @@ class Simulation {
         }
         profiler.endTimer("runSim");
 
-        profiler.printReport();
         this.resetProfiler();
         return ParticleSystem.createFrom(particles);
     }
@@ -63,7 +62,7 @@ class Simulation {
             var force = new Vector(0, 0, 0);
             for (Particle other : subset) {
                 if (current != other) {
-                    force = force.add(current.getCouloumbForce(other));
+                    force = force.add(current.getGravitationalForce(other));
                 } else {
                     current.inuse = true;
                 }
@@ -84,7 +83,7 @@ class Simulation {
             var force = new Vector(0, 0, 0);
             for (Particle other : subset) {
                 if (current != other) {
-                    force = force.addInPlace(current.getCouloumbForce(other));
+                    force = force.addInPlace(current.getGravitationalForce(other));
                 } else {
                     current.inuse = true;
                 }
@@ -104,7 +103,7 @@ class Simulation {
                     var force = new Vector(0, 0, 0);
                     for (Particle other : subset) {
                         if (current != other) {
-                            force = force.add(current.getCouloumbForce(other));
+                            force = force.add(current.getGravitationalForce(other));
                         } else {
                             current.inuse = true;
                         }
@@ -125,7 +124,7 @@ class Simulation {
                     var force = new Vector(0, 0, 0);
                     for (Particle other : subset) {
                         if (current != other) {
-                            force = force.addInPlace(current.getCouloumbForce(other));
+                            force = force.addInPlace(current.getGravitationalForce(other));
                         } else {
                             current.inuse = true;
                         }
