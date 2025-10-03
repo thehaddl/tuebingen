@@ -9,7 +9,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class CsvWriterTest {
+public class SimulationWriterTest {
 
     @TempDir
     Path dir;
@@ -25,7 +25,7 @@ public class CsvWriterTest {
         l.add(new Particle(new Vector(3, 4, 5), new Vector(4, 5, 6)));
         //execute
         l.get(0).putCharge(-1.2);
-        try (var c = new CsvWriter(pt)) {
+        try (var c = new SimulationToCsvWriter(pt)) {
             c.writeStep(17, l);
         }
 
