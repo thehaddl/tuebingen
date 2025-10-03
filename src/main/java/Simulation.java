@@ -144,7 +144,31 @@ class Simulation {
             case PARALLEL_MUTABLE -> calculateForcesParallelMutable(particles, sample);
         };
     }
+    Map<Integer, List<Vector>> getAllIndividualForcesByParticleParallel(List<Particle> particles, List<Particle> subset) {
+        double COUPLINGCONST = 1.0 / subset.size();
 
+
+        Map<Integer, List<Vector>> forcesByParticle = particles.parallelStream()
+                .collect(Collectors.toMap(
+                        Particle::getId,
+                        current -> {
+                            List<Vector> particleForces = new ArrayList<>();
+
+                            for (Particle other : subset) {
+                                if (current != other) {
+                                    Vector force = current.getGravitationalForce(other);
+                                    particleForces.add(force.scale(COUPLINGCONST));
+                                } else {
+                                    current.inuse = true;
+                                }
+                            }
+
+                            return particleForces;
+                        }
+                ));
+
+        return forcesByParticle;
+    }
     private void runSimStep(List<Particle> particles, List<Particle> sample) {
         List<Vector> forces = calculateForces(particles,sample);
         // step 2: calculate new velocities and positions
