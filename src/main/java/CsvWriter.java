@@ -2,34 +2,23 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-public class CsvWriter implements SimStepOutput, AutoCloseable {
+public abstract class CsvWriter implements AutoCloseable {
 
-    private final BufferedWriter writer;
+     protected BufferedWriter writer;
 
     public CsvWriter(Path  file) throws IOException {
         writer = Files.newBufferedWriter(file);
-        writer.write("step,position_x,position_y,position_z,velocity_x,velocity_y,velocity_z,ID,inuse,charge\n");
-
     }
 
-    @Override
-    public void writeStep(int round, List<Particle> particles) {
-        try {
-            for (var p : particles) {
 
-                writer.write(String.join(",", String.valueOf(round), toCSV(p.position), toCSV(p.velocity),Integer.toString(p.id),Boolean.toString(p.inuse), p.charge +"\n"));
 
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private String toCSV(Vector v) {
+    protected String toCSV(Vector v) {
         return Arrays.stream(v.components).mapToObj(Double::toString).collect(Collectors.joining(","));
     }
 
